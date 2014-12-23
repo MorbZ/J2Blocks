@@ -1,0 +1,3 @@
+[submodule "JNBT"]
+	path = JNBT
+	url = https://github.com/Morlok8k/JNBT

@@ -1,0 +1,7 @@
+/bin/
+.DS_STORE
+/.project
+/.settings/
+/.classpath
+/map/
+Main.java
