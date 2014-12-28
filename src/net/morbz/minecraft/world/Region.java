@@ -66,7 +66,7 @@ public class Region {
 				for(int z = 0; z < CHUNKS_PER_REGION_SIDE; z++) {
 					Chunk chunk = chunks[x][z];
 					if(chunk != null && chunk.hasBlocks()) {
-						NBTOutputStream out = new NBTOutputStream(regionFile.getChunkDataOutputStream(x, z));
+						NBTOutputStream out = new NBTOutputStream(regionFile.getChunkDataOutputStream(x, z), false);
 						try {
 							out.writeTag(chunks[x][z].getTag());
 						} finally {
