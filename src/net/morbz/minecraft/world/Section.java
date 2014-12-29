@@ -72,14 +72,26 @@ public class Section implements ITagProvider {
 	 */
 	@Override
 	public Tag getTag() {
-		// Make blocks byte array
-		byte[] bytes = new byte[Chunk.BLOCKS_PER_CHUNK_SIDE * Chunk.BLOCKS_PER_CHUNK_SIDE * SECTION_HEIGHT];
+		// Make blocks byte arrays
+		int numBlocks = Chunk.BLOCKS_PER_CHUNK_SIDE * Chunk.BLOCKS_PER_CHUNK_SIDE * SECTION_HEIGHT;
+		byte[] blockIds = new byte[numBlocks];
+		byte[] blockData = new byte[numBlocks / 2]; // 4 bit values
 		int i = 0;
 		for(int y = 0; y < SECTION_HEIGHT; y++) {
 			for(int z = 0; z < Chunk.BLOCKS_PER_CHUNK_SIDE; z++) {
 				for(int x = 0; x < Chunk.BLOCKS_PER_CHUNK_SIDE; x++) {
 					if(blocks[x][y][z] != null) {
-						bytes[i] = blocks[x][y][z].getBlockId();
+						// Set block ID
+						blockIds[i] = blocks[x][y][z].getBlockId();
+						
+						// Set block data
+						byte data = blocks[x][y][z].getBlockData();
+						if(i % 2 == 0) {
+							data = (byte)((data & 0xF) | data);
+						} else {
+							data = (byte)(((data << 4) & 0xF0) | data);
+						}
+						blockData[i / 2] = data;
 					}
 					i++;
 				}
@@ -88,8 +100,8 @@ public class Section implements ITagProvider {
 		
 		// Create tag
 		CompoundTagFactory factory = new CompoundTagFactory("");
-		factory.set(new ByteArrayTag("Blocks", bytes));
-		factory.set(new ByteArrayTag("Data", new byte[2048]));
+		factory.set(new ByteArrayTag("Blocks", blockIds));
+		factory.set(new ByteArrayTag("Data", blockData));
 		factory.set(new ByteArrayTag("BlockLight", new byte[2048]));
 		factory.set(new ByteArrayTag("SkyLight", new byte[2048]));
 		factory.set(new ByteTag("Y", (byte)y));
