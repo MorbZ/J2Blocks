@@ -1,5 +1,6 @@
 package net.morbz.minecraft.world;
 
+import net.morbz.minecraft.blocks.IBlock;
 import net.morbz.minecraft.tags.CompoundTagFactory;
 import net.morbz.minecraft.tags.ITagProvider;
 
@@ -18,8 +19,8 @@ public class Section implements ITagProvider {
 	 */
 	public static final int SECTION_HEIGHT = 16;
 	
-	private byte[][][] blocks = 
-		new byte[Chunk.BLOCKS_PER_CHUNK_SIDE][Chunk.BLOCKS_PER_CHUNK_SIDE][SECTION_HEIGHT];
+	private IBlock[][][] blocks = 
+		new IBlock[Chunk.BLOCKS_PER_CHUNK_SIDE][Chunk.BLOCKS_PER_CHUNK_SIDE][SECTION_HEIGHT];
 	private int blockCount = 0;
 	private int y;
 	
@@ -38,18 +39,23 @@ public class Section implements ITagProvider {
 	 * @param x The X-coordinate within the section
 	 * @param y The Y-coordinate within the section
 	 * @param z The Z-coordinate within the section
-	 * @param value The value of the block
+	 * @param block The block
 	 */
-	public void setBlock(int x, int y, int z, byte value) {
+	public void setBlock(int x, int y, int z, IBlock block) {
+		// We ignore it if it's air
+		if(block.getBlockId() == 0) {
+			block = null;
+		}
+		
 		// Count non-air blocks
-		if(blocks[x][y][z] == 0 && value != 0) {
+		if(blocks[x][y][z] == null && block != null) {
 			blockCount++;
-		} else if(blocks[x][y][z] != 0 && value == 0) {
+		} else if(blocks[x][y][z] != null && block == null) {
 			blockCount--;
 		}
 		
 		// Set block
-		blocks[x][y][z] = value;
+		blocks[x][y][z] = block;
 	}
 	
 	/**
@@ -72,7 +78,9 @@ public class Section implements ITagProvider {
 		for(int y = 0; y < SECTION_HEIGHT; y++) {
 			for(int z = 0; z < Chunk.BLOCKS_PER_CHUNK_SIDE; z++) {
 				for(int x = 0; x < Chunk.BLOCKS_PER_CHUNK_SIDE; x++) {
-					bytes[i] = blocks[x][y][z];
+					if(blocks[x][y][z] != null) {
+						bytes[i] = blocks[x][y][z].getBlockId();
+					}
 					i++;
 				}
 			}

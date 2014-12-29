@@ -3,6 +3,7 @@ package net.morbz.minecraft.world;
 import java.io.File;
 import java.io.IOException;
 
+import net.morbz.minecraft.blocks.IBlock;
 import net.unknown.RegionFile;
 
 import org.jnbt.NBTOutputStream;
@@ -32,9 +33,9 @@ public class Region {
 	 * @param x The X-coordinate within the region
 	 * @param y The Y-coordinate
 	 * @param z The Z-coordinate within the region
-	 * @param value The value of the block
+	 * @param block The block
 	 */
-	public void setBlock(int x, int y, int z, byte value) {
+	public void setBlock(int x, int y, int z, IBlock block) {
 		// Get chunk coords
 		int chunkX = x / Chunk.BLOCKS_PER_CHUNK_SIDE;
 		int chunkZ = z / Chunk.BLOCKS_PER_CHUNK_SIDE;
@@ -49,7 +50,7 @@ public class Region {
 		// Set block
 		int blockX = x % Chunk.BLOCKS_PER_CHUNK_SIDE;
 		int blockZ = z % Chunk.BLOCKS_PER_CHUNK_SIDE;
-		chunk.setBlock(blockX, y, blockZ, value);
+		chunk.setBlock(blockX, y, blockZ, block);
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package net.morbz.minecraft.world;
 
+import net.morbz.minecraft.blocks.IBlock;
 import net.morbz.minecraft.tags.CompoundTagFactory;
 import net.morbz.minecraft.tags.ITagProvider;
 import net.morbz.minecraft.tags.ListTagFactory;
@@ -49,9 +50,9 @@ public class Chunk implements ITagProvider {
 	 * @param x The X-coordinate within the chunk
 	 * @param y The Y-coordinate
 	 * @param z The Z-coordinate within the chunk
-	 * @param value The value of the block
+	 * @param block The block
 	 */
-	public void setBlock(int x, int y, int z, byte value) {
+	public void setBlock(int x, int y, int z, IBlock block) {
 		// Create section
 		int sectionY = y / Section.SECTION_HEIGHT;
 		Section section = sections[sectionY];
@@ -62,13 +63,13 @@ public class Chunk implements ITagProvider {
 		
 		// Update height map
 		// TODO: Update map entry when block is air
-		if(y > heightMap[x][z] && value != 0) {
+		if(y > heightMap[x][z] && block.getBlockId() != 0) {
 			heightMap[x][z] = y;
 		}
 		
 		// Set block
 		int blockY = y % Section.SECTION_HEIGHT;
-		section.setBlock(x, blockY, z, value);
+		section.setBlock(x, blockY, z, block);
 	}
 	
 	/**

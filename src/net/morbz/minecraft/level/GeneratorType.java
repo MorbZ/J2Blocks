@@ -5,6 +5,7 @@ package net.morbz.minecraft.level;
  * 
  * @author MorbZ
  */
+// TODO: Create a generator class for setting the default block layers
 public enum GeneratorType {
 	/**
 	 * Default generator

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.jnbt.NBTOutputStream;
 
+import net.morbz.minecraft.blocks.IBlock;
 import net.morbz.minecraft.level.Level;
 
 /**
@@ -41,9 +42,9 @@ public class World {
 	 * @param x The X-coordinate
 	 * @param y The Y-coordinate
 	 * @param z The Z-coordinate
-	 * @param value The value of the block
+	 * @param block The block
 	 */
-	public void setBlock(int x, int y, int z, byte value) {
+	public void setBlock(int x, int y, int z, IBlock block) {
 		// TODO: Validate Y-coord
 		// Get region point
 		int regionX = x / Region.BLOCKS_PER_REGION_SIDE;
@@ -72,7 +73,7 @@ public class World {
 		if(blockZ < 0) {
 			blockZ += Region.BLOCKS_PER_REGION_SIDE;
 		}
-		region.setBlock(blockX, y, blockZ, value);
+		region.setBlock(blockX, y, blockZ, block);
 	}
 	
 	/**
@@ -82,6 +83,7 @@ public class World {
 	 * @return The directory in which the world has been saved
 	 * @throws IOException When file writing fails
 	 */
+	// TODO: Set spawn position to the center of all set blocks
 	public File save() throws IOException {
 		// Create worlds directory
 		File worldDir = new File("worlds");
