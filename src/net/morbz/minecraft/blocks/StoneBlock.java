@@ -31,6 +31,7 @@ public enum StoneBlock implements IBlock {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public byte getBlockData() {
 		return (byte)value;
 	}

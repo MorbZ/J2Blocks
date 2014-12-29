@@ -27,6 +27,7 @@ public enum DirtBlock implements IBlock {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public byte getBlockData() {
 		return (byte)value;
 	}

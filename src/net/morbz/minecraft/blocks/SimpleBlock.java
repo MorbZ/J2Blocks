@@ -87,6 +87,7 @@ public enum SimpleBlock implements IBlock {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public byte getBlockData() {
 		return 0;
 	}
