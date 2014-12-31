@@ -19,7 +19,7 @@ public enum Material {
 	WATER(9), // √
 	FLOWING_LAVA(10),
 	LAVA(11), // √
-	SAND(12),
+	SAND(12), // √
 	GRAVEL(13), // √
 	GOLD_ORE(14), // √
 	IRON_ORE(15), // √
