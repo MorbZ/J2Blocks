@@ -25,7 +25,7 @@ public enum StoneBlock implements IBlock {
 	 */
 	@Override
 	public byte getBlockId() {
-		return 1;
+		return (byte)Material.STONE.getValue();
 	}
 	
 	/**

@@ -41,18 +41,18 @@ public class StainedBlock implements IBlock {
 	 * The material of the stained block.
 	 */
 	public enum StainedMaterial {
-		WOOL(35),
-		GLASS(95),
-		CLAY(159),
-		GLASS_PANE(160),
-		CARPET(171);
+		WOOL(Material.WOOL),
+		GLASS(Material.STAINED_GLASS),
+		CLAY(Material.STAINED_HARDENED_CLAY),
+		GLASS_PANE(Material.STAINED_GLASS_PANE),
+		CARPET(Material.CARPET);
 		
-		private int value;
-		private StainedMaterial(int value) {
-			this.value = value;
+		private Material material;
+		private StainedMaterial(Material material) {
+			this.material = material;
 		}
 		public int getValue() {
-			return value;
+			return material.getValue();
 		}
 	}
 	

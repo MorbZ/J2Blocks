@@ -110,20 +110,20 @@ public class DoorBlock implements IBlock {
 	 * The material of which the door consists.
 	 */
 	public enum DoorMaterial {
-		OAK(64),
-		IRON(71),
-		SPRUCE(193),
-		BIRCH(194),
-		JUNGLE(195),
-		ACACIA(196),
-		DARK_OAK(197);
+		OAK(Material.WOODEN_DOOR),
+		IRON(Material.IRON_DOOR),
+		SPRUCE(Material.SPRUCE_DOOR),
+		BIRCH(Material.BIRCH_DOOR),
+		JUNGLE(Material.JUNGLE_DOOR),
+		ACACIA(Material.ACACIA_DOOR),
+		DARK_OAK(Material.DARK_OAK_DOOR);
 		
-		private int value;
-		private DoorMaterial(int value) {
-			this.value = value;
+		private Material material;
+		private DoorMaterial(Material material) {
+			this.material = material;
 		}
 		public int getValue() {
-			return value;
+			return material.getValue();
 		}
 	}
 }

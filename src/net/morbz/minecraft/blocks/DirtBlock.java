@@ -21,7 +21,7 @@ public enum DirtBlock implements IBlock {
 	 */
 	@Override
 	public byte getBlockId() {
-		return 3;
+		return (byte)Material.DIRT.getValue();
 	}
 	
 	/**

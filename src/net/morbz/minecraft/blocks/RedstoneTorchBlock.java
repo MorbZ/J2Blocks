@@ -28,7 +28,8 @@ public class RedstoneTorchBlock implements IBlock {
 	@Override
 	public byte getBlockId() {
 		// Is active?
-		return isActive ? (byte)76 : (byte)75;
+		Material material = isActive ? Material.REDSTONE_TORCH : Material.UNLIT_REDSTONE_TORCH;
+		return (byte)material.getValue();
 	}
 	
 	/**
