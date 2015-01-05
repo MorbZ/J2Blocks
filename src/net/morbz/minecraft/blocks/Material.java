@@ -12,7 +12,7 @@ public enum Material {
 	GRASS(2), // √
 	DIRT(3), // √
 	COBBLESTONE(4), // √
-	PLANKS(5),
+	PLANKS(5), // √
 	SAPLING(6),
 	BEDROCK(7), // √
 	FLOWING_WATER(8),
