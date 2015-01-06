@@ -9,7 +9,6 @@ import net.morbz.minecraft.blocks.states.HalfState;
  * 
  * @author MorbZ
  */
-@SuppressWarnings("javadoc")
 public class DoorBlock implements IBlock {
 	private DoorMaterial material;
 	private Facing4State facing;
@@ -101,6 +100,7 @@ public class DoorBlock implements IBlock {
 	/**
 	 * The site on which the hinge is.
 	 */
+	@SuppressWarnings("javadoc")
 	public enum HingeSide {
 		LEFT,
 		RIGHT
@@ -109,6 +109,7 @@ public class DoorBlock implements IBlock {
 	/**
 	 * The material of which the door consists.
 	 */
+	@SuppressWarnings("javadoc")
 	public enum DoorMaterial {
 		OAK(Material.WOODEN_DOOR),
 		IRON(Material.IRON_DOOR),

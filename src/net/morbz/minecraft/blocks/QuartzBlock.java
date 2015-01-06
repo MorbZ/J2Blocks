@@ -6,9 +6,8 @@ package net.morbz.minecraft.blocks;
  * 
  * @author MorbZ
  */
-@SuppressWarnings("javadoc")
 public class QuartzBlock implements IBlock {
-	private byte value;
+	private int value;
 	
 	/**
 	 * Creates a new instance. This constructor is used for the basic variants default and chiseled
@@ -17,7 +16,7 @@ public class QuartzBlock implements IBlock {
 	 * @param variant The variant of the quartz block
 	 */
 	public QuartzBlock(QuartzVariant variant) {
-		value = (byte)variant.getValue();
+		value = variant.getValue();
 	}
 	
 	/**
@@ -27,7 +26,7 @@ public class QuartzBlock implements IBlock {
 	 * @param facing The facing of the pillar quartz block
 	 */
 	public QuartzBlock(QuartzFacing facing) {
-		value = (byte)facing.getValue();
+		value = facing.getValue();
 	}
 	
 	/**
@@ -43,13 +42,14 @@ public class QuartzBlock implements IBlock {
 	 */
 	@Override
 	public byte getBlockData() {
-		return value;
+		return (byte)value;
 	}
 	
 	/**
 	 * The variant of the quartz block. Except pillar which is a special type because it has facing
 	 * data.
 	 */
+	@SuppressWarnings("javadoc")
 	public enum QuartzVariant {
 		DEFAULT(0),
 		CHISELED(1);
@@ -66,6 +66,7 @@ public class QuartzBlock implements IBlock {
 	/**
 	 * The facing of the quartz block. This is only used for the pillar variant.
 	 */
+	@SuppressWarnings("javadoc")
 	public enum QuartzFacing {
 		VERTICAL(2),
 		NORTH_SOUTH(3),

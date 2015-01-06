@@ -5,7 +5,6 @@ package net.morbz.minecraft.blocks;
  * 
  * @author MorbZ
  */
-@SuppressWarnings("javadoc")
 public class StainedBlock implements IBlock {
 	private StainedMaterial material;
 	private StainedColor color;
@@ -40,6 +39,7 @@ public class StainedBlock implements IBlock {
 	/**
 	 * The material of the stained block.
 	 */
+	@SuppressWarnings("javadoc")
 	public enum StainedMaterial {
 		WOOL(Material.WOOL),
 		GLASS(Material.STAINED_GLASS),
@@ -59,6 +59,7 @@ public class StainedBlock implements IBlock {
 	/**
 	 * The color of the stained block.
 	 */
+	@SuppressWarnings("javadoc")
 	public enum StainedColor {
 		WHITE(0),
 		ORANGE(1),

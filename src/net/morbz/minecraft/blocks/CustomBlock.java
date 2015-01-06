@@ -6,7 +6,7 @@ package net.morbz.minecraft.blocks;
  * @author MorbZ
  */
 public class CustomBlock implements IBlock {
-	private byte blockId, blockData;
+	private int blockId, blockData;
 	
 	/**
 	 * Creates a new instance.
@@ -14,7 +14,7 @@ public class CustomBlock implements IBlock {
 	 * @param blockId The block ID
 	 * @param blockData The block data
 	 */
-	public CustomBlock(byte blockId, byte blockData) {
+	public CustomBlock(int blockId, int blockData) {
 		this.blockId = blockId;
 		this.blockData = blockData;
 	}
@@ -24,7 +24,7 @@ public class CustomBlock implements IBlock {
 	 */
 	@Override
 	public byte getBlockId() {
-		return blockId;
+		return (byte)blockId;
 	}
 	
 	/**
@@ -32,6 +32,6 @@ public class CustomBlock implements IBlock {
 	 */
 	@Override
 	public byte getBlockData() {
-		return blockData;
+		return (byte)blockData;
 	}
 }
