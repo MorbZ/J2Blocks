@@ -1,7 +1,8 @@
 package net.morbz.minecraft.blocks;
 
 /**
- * A custom block for testing purposes. The block ID and block data can be set freely.
+ * A custom block for testing purposes and internal functions. The block ID and block data can be 
+ * set freely.
  * 
  * @author MorbZ
  */

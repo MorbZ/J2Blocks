@@ -24,8 +24,17 @@ public class Region {
 	 */
 	public static final int BLOCKS_PER_REGION_SIDE = CHUNKS_PER_REGION_SIDE * Chunk.BLOCKS_PER_CHUNK_SIDE;
 	
-	
 	private Chunk[][] chunks = new Chunk[CHUNKS_PER_REGION_SIDE][CHUNKS_PER_REGION_SIDE];
+	private DefaultLayers layers;
+	
+	/**
+	 * Creates a new instance.
+	 * 
+	 * @param layers The default layers. Can be 'null'
+	 */
+	public Region(DefaultLayers layers) {
+		this.layers = layers;
+	}
 	
 	/**
 	 * Sets a block at the given position.
@@ -43,7 +52,7 @@ public class Region {
 		// Create chunk
 		Chunk chunk = chunks[chunkX][chunkZ];
 		if(chunk == null) {
-			chunk = new Chunk(chunkX, chunkZ);
+			chunk = new Chunk(chunkX, chunkZ, layers);
 			chunks[chunkX][chunkZ] = chunk;
 		}
 		

@@ -22,10 +22,11 @@ public class World {
 	/**
 	 * Maximal world height
 	 */
-	public final int MAX_HEIGHT = 256;
+	public static final int MAX_HEIGHT = 256;
 	
 	private Map<Point, Region> regions = new HashMap<Point, Region>();
 	private Level level;
+	private DefaultLayers layers;
 	
 	/**
 	 * Creates a new instance.
@@ -37,10 +38,21 @@ public class World {
 	}
 	
 	/**
+	 * Creates a new instance.
+	 * 
+	 * @param level The level that is used to define the world settings
+	 * @param layers The default layers. Can be 'null'
+	 */
+	public World(Level level, DefaultLayers layers) {
+		this.level = level;
+		this.layers = layers;
+	}
+	
+	/**
 	 * Sets a block at the given world position.
 	 * 
 	 * @param x The X-coordinate
-	 * @param y The Y-coordinate
+	 * @param y The Y-coordinate (Height, Must be between 0 and 255)
 	 * @param z The Z-coordinate
 	 * @param block The block
 	 */
@@ -65,7 +77,7 @@ public class World {
 		// Create region
 		Region region = regions.get(point);
 		if(region == null) {
-			region = new Region();
+			region = new Region(layers);
 			regions.put(point, region);
 		}
 		

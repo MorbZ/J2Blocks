@@ -1,6 +1,8 @@
 package net.morbz.minecraft.world;
 
+import net.morbz.minecraft.blocks.CustomBlock;
 import net.morbz.minecraft.blocks.IBlock;
+import net.morbz.minecraft.blocks.Material;
 import net.morbz.minecraft.tags.CompoundTagFactory;
 import net.morbz.minecraft.tags.ITagProvider;
 import net.morbz.minecraft.tags.ListTagFactory;
@@ -38,10 +40,31 @@ public class Chunk implements ITagProvider {
 	 * 
 	 * @param xPos The X-coordinate within the chunk
 	 * @param zPos The Z-coordinate within the chunk
+	 * @param layers The default layers. Can be 'null'
 	 */
-	public Chunk(int xPos, int zPos) {
+	public Chunk(int xPos, int zPos, DefaultLayers layers) {
 		this.xPos = xPos;
 		this.zPos = zPos;
+		
+		// Set default blocks
+		if(layers != null) {
+			// Iterate layers
+			for(int y = 0; y < World.MAX_HEIGHT; y++) {
+				Material material = layers.getLayer(y);
+				if(material != null) {
+					// Create block
+					CustomBlock block = new CustomBlock(material.getValue(), 0);
+					
+					// Iterate area
+					for(int x = 0; x < BLOCKS_PER_CHUNK_SIDE; x++) {
+						for(int z = 0; z < BLOCKS_PER_CHUNK_SIDE; z++) {
+							// Set block
+							setBlock(x, y, z, block);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	/**
