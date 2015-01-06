@@ -45,7 +45,12 @@ public class World {
 	 * @param block The block
 	 */
 	public void setBlock(int x, int y, int z, IBlock block) {
-		// TODO: Validate Y-coord
+		// Check for valid height
+		if(y > MAX_HEIGHT - 1 || y < 0) {
+			// Fail silently
+			return;
+		}
+		
 		// Get region point
 		int regionX = x / Region.BLOCKS_PER_REGION_SIDE;
 		if(x < 0) {
