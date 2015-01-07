@@ -3,8 +3,10 @@ package net.morbz.minecraft.world;
 import net.morbz.minecraft.blocks.Material;
 
 /**
- * This class can be used to define the default block layers of the world. This results in a flat
- * world where the blocks of each Y-coordinate are the same until they get overwritten.
+ * This class can be used to define the default block layers of the part of the world that was 
+ * created by J2Blocks. This results in a flat world where the blocks of each Y-coordinate are the 
+ * same until they get overwritten. It is recommended to combine the DefaultLayers with the 
+ * FlatGenerator to get a consistent world.
  * 
  * @author MorbZ
  */
