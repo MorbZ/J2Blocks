@@ -55,7 +55,7 @@ public enum Material {
 	LAPIS_ORE(21), // √
 	LAPIS_BLOCK(22), // √
 	DISPENSER(23),
-	SANDSTONE(24),
+	SANDSTONE(24), // √
 	NOTEBLOCK(25),
 	BED(26),
 	GOLDEN_RAIL(27), // √
