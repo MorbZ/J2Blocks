@@ -4,5 +4,5 @@
 /.settings/
 /.classpath
 /map/
-Main.java
+Main*.java
 /worlds/
