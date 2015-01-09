@@ -4,7 +4,7 @@ J2Blocks aims to provide a simple library for custom map generation. In order to
 
 Example
 ------
-In this example we want to create a Minecraft world that is paved with melon-blocks. We want to create a huge structure of glass and want to set door on top of it. From the Example.java:
+In this example we want to create a Minecraft world that is paved with melon-blocks. We want to create a huge structure of glass and want to set door on top of it. From the [Example.java](https://github.com/MorbZ/J2Blocks/blob/master/doc/Example.java):
 
 	// Create the base layers of the generated world.
 	// We set the bottom layer of the world to be bedrock and the 20 layers above to be melon 
@@ -52,9 +52,11 @@ In this example we want to create a Minecraft world that is paved with melon-blo
 
 The world has been saved to the /world/ directory in our execution directory. We can move it to the Minecraft /saves/ directory and enjoy all the melons.
 
+![The generated melon world](https://raw.githubusercontent.com/MorbZ/J2Blocks/master/doc/example.jpg)
+
 Known Issues
 ------
 - The Y-coordinate of the spawn position doesn't work correctly. The player will spawn in the air and fall at first
 - The lightning isn't sophisticated yet. There are sometimes blocks that miss lightning and appear black
-- Not all blocks are implemented yet. See in the Material.java the blocks that have a check mark  
+- Not all blocks are implemented yet. See in the [Material.java](https://github.com/MorbZ/J2Blocks/blob/master/src/net/morbz/minecraft/blocks/Material.java) the blocks that have a check mark  
 **Feel free to help and fix the issues by submitting a pull request.**
