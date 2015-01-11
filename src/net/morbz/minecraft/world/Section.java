@@ -43,8 +43,14 @@ public class Section implements ITagProvider {
 	 */
 	public static final int SECTION_HEIGHT = 16;
 	
-	private IBlock[][][] blocks = 
-		new IBlock[Chunk.BLOCKS_PER_CHUNK_SIDE][Chunk.BLOCKS_PER_CHUNK_SIDE][SECTION_HEIGHT];
+	/**
+	 * The total number of blocks in a section
+	 */
+	public static final int BLOCKS_PER_SECTION = 
+		Chunk.BLOCKS_PER_CHUNK_SIDE * Chunk.BLOCKS_PER_CHUNK_SIDE * SECTION_HEIGHT;
+	
+	private byte[] blockIds = new byte[BLOCKS_PER_SECTION];
+	private NibbleArray blockData = new NibbleArray(BLOCKS_PER_SECTION);
 	private int blockCount = 0;
 	private int y;
 	
@@ -72,14 +78,29 @@ public class Section implements ITagProvider {
 		}
 		
 		// Count non-air blocks
-		if(blocks[x][y][z] == null && block != null) {
+		int index = getBlockIndex(x, y, z);
+		if(blockIds[index] == 0 && block != null) {
 			blockCount++;
-		} else if(blocks[x][y][z] != null && block == null) {
+		} else if(blockIds[index] != 0 && block == null) {
 			blockCount--;
 		}
 		
 		// Set block
-		blocks[x][y][z] = block;
+		if(block != null) {
+			blockIds[index] = block.getBlockId();
+			blockData.set(index, block.getBlockData());
+		} else {
+			blockIds[index] = 0;
+			blockData.set(index, (byte)0);
+		}
+	}
+	
+	private int getBlockIndex(int x, int y, int z) {
+		int index = 0;
+		index += y * Chunk.BLOCKS_PER_CHUNK_SIDE * Chunk.BLOCKS_PER_CHUNK_SIDE;
+		index += z * Chunk.BLOCKS_PER_CHUNK_SIDE;
+		index += x;
+		return index;
 	}
 	
 	/**
@@ -96,36 +117,10 @@ public class Section implements ITagProvider {
 	 */
 	@Override
 	public Tag getTag() {
-		// Make blocks byte arrays
-		int numBlocks = Chunk.BLOCKS_PER_CHUNK_SIDE * Chunk.BLOCKS_PER_CHUNK_SIDE * SECTION_HEIGHT;
-		byte[] blockIds = new byte[numBlocks];
-		byte[] blockData = new byte[numBlocks / 2]; // 4 bit values
-		int i = 0;
-		for(int y = 0; y < SECTION_HEIGHT; y++) {
-			for(int z = 0; z < Chunk.BLOCKS_PER_CHUNK_SIDE; z++) {
-				for(int x = 0; x < Chunk.BLOCKS_PER_CHUNK_SIDE; x++) {
-					if(blocks[x][y][z] != null) {
-						// Set block ID
-						blockIds[i] = blocks[x][y][z].getBlockId();
-						
-						// Set block data
-						byte data = blocks[x][y][z].getBlockData();
-						if(i % 2 == 0) {
-							data = (byte)((data & 0xF) | data);
-						} else {
-							data = (byte)(((data << 4) & 0xF0) | data);
-						}
-						blockData[i / 2] = data;
-					}
-					i++;
-				}
-			}
-		}
-		
 		// Create tag
 		CompoundTagFactory factory = new CompoundTagFactory("");
 		factory.set(new ByteArrayTag("Blocks", blockIds));
-		factory.set(new ByteArrayTag("Data", blockData));
+		factory.set(new ByteArrayTag("Data", blockData.getBytes()));
 		factory.set(new ByteArrayTag("BlockLight", new byte[2048]));
 		factory.set(new ByteArrayTag("SkyLight", new byte[2048]));
 		factory.set(new ByteTag("Y", (byte)y));
