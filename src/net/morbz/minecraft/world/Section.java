@@ -113,6 +113,25 @@ public class Section implements ITagProvider {
 	}
 	
 	/**
+	 * Returns the Y-coordinate of the highest block that is not air or -1 is there are no blocks in
+	 * this column.
+	 * 
+	 * @param x The X-coordinate
+	 * @param z The Z-coordinate
+	 * @return The Y-coordinate of the highest block or -1
+	 */
+	public int getHighestBlock(int x, int z) {
+		// Iterate column
+		for(int y = SECTION_HEIGHT - 1; y >= 0; y--) {
+			int index = getBlockIndex(x, y, z);
+			if(blockIds[index] != 0) {
+				return y;
+			}
+		}
+		return -1;
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override

@@ -170,6 +170,12 @@ public class World {
 			nbtOut.close();
 		}
 		
+		// Calculate height maps
+		System.out.println("Calculate height maps");
+		for(Region region : regions.values()) {
+			region.calculateHeightMap();
+		}
+		
 		// Iterate regions
 		for(Map.Entry<Point, Region> entry : regions.entrySet()) {
 			Point point = entry.getKey();

@@ -87,6 +87,20 @@ public class Region {
 	}
 	
 	/**
+	 * Calculates the height maps for all chunks.
+	 */
+	public void calculateHeightMap() {
+		for(int x = 0; x < CHUNKS_PER_REGION_SIDE; x++) {
+			for(int z = 0; z < CHUNKS_PER_REGION_SIDE; z++) {
+				Chunk chunk = chunks[x][z];
+				if(chunk != null) {
+					chunk.calculateHeightMap();
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Writes this region to a file.
 	 * 
 	 * @param path The path to write the file

@@ -108,12 +108,6 @@ public class Chunk implements ITagProvider {
 			sections[sectionY] = section;
 		}
 		
-		// Update height map
-		// TODO: Update map entry when block is air
-		if(y > heightMap[x][z] && block.getBlockId() != 0) {
-			heightMap[x][z] = y;
-		}
-		
 		// Set block
 		int blockY = y % Section.SECTION_HEIGHT;
 		section.setBlock(x, blockY, z, block);
@@ -132,6 +126,30 @@ public class Chunk implements ITagProvider {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Calculates the height map.
+	 */
+	public void calculateHeightMap() {
+		// Iterate sections from top to bottom
+		for(int y = SECTIONS_PER_CHUNK - 1; y >= 0; y--) {
+			Section section = sections[y];
+			if(section != null) {
+				// Iterate X/Z-columns
+				for(int x = 0; x < BLOCKS_PER_CHUNK_SIDE; x++) {
+					for(int z = 0; z < BLOCKS_PER_CHUNK_SIDE; z++) {
+						// Update height
+						if(heightMap[x][z] == 0) {
+							int height = section.getHighestBlock(x, z);
+							if(height != -1) {
+								heightMap[x][z] = y * Section.SECTION_HEIGHT +  height;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	/**
