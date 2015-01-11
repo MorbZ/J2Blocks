@@ -31,6 +31,7 @@ package net.morbz.minecraft.world;
  */
 public class NibbleArray {
 	private byte[] bytes;
+	private int size;
 	
 	/**
 	 * Creates a new instance.
@@ -39,6 +40,7 @@ public class NibbleArray {
 	 */
 	public NibbleArray(int size) {
 		// Round up the size in case it's odd
+		this.size = size;
 		int num = (int)Math.ceil(size / 2.0);
 		bytes = new byte[num];
 	}
@@ -57,6 +59,13 @@ public class NibbleArray {
 			data |= (byte)((value & 0xF) << 4);
 		}
 		bytes[index / 2] = data;
+	}
+	
+	/**
+	 * @return The number of elements
+	 */
+	public int size() {
+		return size;
 	}
 	
 	/**

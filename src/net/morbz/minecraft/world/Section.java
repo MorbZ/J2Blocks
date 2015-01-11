@@ -117,12 +117,18 @@ public class Section implements ITagProvider {
 	 */
 	@Override
 	public Tag getTag() {
+		// Make all blocks have the same sky light
+		NibbleArray skyLight = new NibbleArray(BLOCKS_PER_SECTION);
+		for(int i = 0; i < skyLight.size(); i++) {
+			skyLight.set(i, (byte)0xF);
+		}
+		
 		// Create tag
 		CompoundTagFactory factory = new CompoundTagFactory("");
 		factory.set(new ByteArrayTag("Blocks", blockIds));
 		factory.set(new ByteArrayTag("Data", blockData.getBytes()));
-		factory.set(new ByteArrayTag("BlockLight", new byte[2048]));
-		factory.set(new ByteArrayTag("SkyLight", new byte[2048]));
+		factory.set(new ByteArrayTag("BlockLight", new NibbleArray(BLOCKS_PER_SECTION).getBytes()));
+		factory.set(new ByteArrayTag("SkyLight", skyLight.getBytes()));
 		factory.set(new ByteTag("Y", (byte)y));
 		return factory.getTag();
 	}

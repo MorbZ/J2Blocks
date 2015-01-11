@@ -56,7 +56,6 @@ The world has been saved to the /world/ directory in our execution directory. We
 
 Known Issues
 ------
-- The Y-coordinate of the spawn position doesn't work correctly. The player will spawn in the air and fall at first
-- The lightning isn't sophisticated yet. There are sometimes blocks that miss lightning and appear black
+- The lighting isn't sophisticated yet. All blocks (even if they are within buildings) have the same light level
 - Not all blocks are implemented yet. See in the [Material.java](https://github.com/MorbZ/J2Blocks/blob/master/src/net/morbz/minecraft/blocks/Material.java) the blocks that have a check mark  
 **Feel free to help and fix the issues by submitting a pull request.**
