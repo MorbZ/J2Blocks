@@ -62,6 +62,21 @@ public class NibbleArray {
 	}
 	
 	/**
+	 * Gets an element.
+	 * 
+	 * @param index The index of the element
+	 * @return The value of the element
+	 */
+	public byte get(int index) {
+		byte data = bytes[index / 2];
+		if(index % 2 == 0) {
+			return (byte)(data & 0xF);
+		} else {
+			return (byte)((data >> 4) & 0xF);
+		}
+	}
+	
+	/**
 	 * @return The number of elements
 	 */
 	public int size() {

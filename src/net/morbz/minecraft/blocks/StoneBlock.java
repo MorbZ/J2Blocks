@@ -59,4 +59,12 @@ public enum StoneBlock implements IBlock {
 	public byte getBlockData() {
 		return (byte)value;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getTransparency() {
+		return 0;
+	}
 }

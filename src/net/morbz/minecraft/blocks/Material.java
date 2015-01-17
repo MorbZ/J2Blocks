@@ -30,211 +30,229 @@ package net.morbz.minecraft.blocks;
  * @author MorbZ
  */
 @SuppressWarnings("javadoc")
-public enum Material {
-	AIR(0), // √
-	STONE(1), // √
-	GRASS(2), // √
-	DIRT(3), // √
-	COBBLESTONE(4), // √
-	PLANKS(5), // √
-	SAPLING(6),
-	BEDROCK(7), // √
-	FLOWING_WATER(8),
-	WATER(9), // √
-	FLOWING_LAVA(10),
-	LAVA(11), // √
-	SAND(12), // √
-	GRAVEL(13), // √
-	GOLD_ORE(14), // √
-	IRON_ORE(15), // √
-	COAL_ORE(16), // √
-	LOG(17),
-	LEAVES(18),
-	SPONGE(19),
-	GLASS(20), // √
-	LAPIS_ORE(21), // √
-	LAPIS_BLOCK(22), // √
-	DISPENSER(23),
-	SANDSTONE(24), // √
-	NOTEBLOCK(25),
-	BED(26),
-	GOLDEN_RAIL(27), // √
-	DETECTOR_RAIL(28), // √
-	STICKY_PISTON(29),
-	WEB(30), // √
-	TALLGRASS(31),
-	DEADBUSH(32), // √
-	PISTON(33),
-	PISTON_HEAD(34),
-	WOOL(35), // √
-	PISTON_EXTENSION(36),
-	YELLOW_FLOWER(37), // √
-	RED_FLOWER(38),
-	BROWN_MUSHROOM(39), // √
-	RED_MUSHROOM(40), // √
-	GOLD_BLOCK(41), // √
-	IRON_BLOCK(42), // √
-	DOUBLE_STONE_SLAB(43),
-	STONE_SLAB(44),
-	BRICK_BLOCK(45), // √
-	TNT(46),
-	BOOKSHELF(47), // √
-	MOSSY_COBBLESTONE(48), // √
-	OBSIDIAN(49), // √
-	TORCH(50),
-	FIRE(51),
-	MOB_SPAWNER(52),
-	OAK_STAIRS(53),
-	CHEST(54),
-	REDSTONE_WIRE(55),
-	DIAMOND_ORE(56), // √
-	DIAMOND_BLOCK(57), // √
-	CRAFTING_TABLE(58), // √
-	WHEAT(59),
-	FARMLAND(60),
-	FURNACE(61),
-	LIT_FURNACE(62),
-	STANDING_SIGN(63),
-	WOODEN_DOOR(64), // √
-	LADDER(65),
-	RAIL(66), // √
-	STONE_STAIRS(67),
-	WALL_SIGN(68),
-	LEVER(69),
-	STONE_PRESSURE_PLATE(70),
-	IRON_DOOR(71), // √
-	WOODEN_PRESSURE_PLATE(72),
-	REDSTONE_ORE(73), // √
-	LIT_REDSTONE_ORE(74), // √
-	UNLIT_REDSTONE_TORCH(75), // √
-	REDSTONE_TORCH(76), // √
-	STONE_BUTTON(77),
-	SNOW_LAYER(78),
-	ICE(79), // √
-	SNOW(80), // √
-	CACTUS(81),
-	CLAY(82), // √
-	REEDS(83),
-	JUKEBOX(84),
-	FENCE(85), // √
-	PUMPKIN(86),
-	NETHERRACK(87), // √
-	SOUL_SAND(88), // √
-	GLOWSTONE(89), // √
-	PORTAL(90), // √
-	LIT_PUMPKIN(91),
-	CAKE(92),
-	UNPOWERED_REPEATER(93),
-	POWERED_REPEATER(94),
-	STAINED_GLASS(95), // √
-	TRAPDOOR(96),
-	MONSTER_EGG(97),
-	STONEBRICK(98), // √
-	BROWN_MUSHROOM_BLOCK(99),
-	RED_MUSHROOM_BLOCK(100),
-	IRON_BARS(101), // √
-	GLASS_PANE(102), // √
-	MELON_BLOCK(103), // √
-	PUMPKIN_STEM(104),
-	MELON_STEM(105),
-	VINE(106),
-	FENCE_GATE(107),
-	BRICK_STAIRS(108),
-	STONE_BRICK_STAIRS(109),
-	MYCELIUM(110), // √
-	WATERLILY(111), // √
-	NETHER_BRICK(112), // √
-	NETHER_BRICK_FENCE(113), // √
-	NETHER_BRICK_STAIRS(114),
-	NETHER_WART(115),
-	ENCHANTING_TABLE(116),
-	BREWING_STAND(117),
-	CAULDRON(118),
-	END_PORTAL(119),
-	END_PORTAL_FRAME(120),
-	END_STONE(121), // √
-	DRAGON_EGG(122), // √
-	REDSTONE_LAMP(123), // √
-	LIT_REDSTONE_LAMP(124), // √
-	DOUBLE_WOODEN_SLAB(125),
-	WOODEN_SLAB(126),
-	COCOA(127),
-	SANDSTONE_STAIRS(128),
-	EMERALD_ORE(129), // √
-	ENDER_CHEST(130),
-	TRIPWIRE_HOOK(131),
-	TRIPWIRE(132),
-	EMERALD_BLOCK(133), // √
-	SPRUCE_STAIRS(134),
-	BIRCH_STAIRS(135),
-	JUNGLE_STAIRS(136),
-	COMMAND_BLOCK(137),
-	BEACON(138),
-	COBBLESTONE_WALL(139),
-	FLOWER_POT(140),
-	CARROTS(141),
-	POTATOES(142),
-	WOODEN_BUTTON(143),
-	SKULL(144),
-	ANVIL(145),
-	TRAPPED_CHEST(146),
-	LIGHT_WEIGHTED_PRESSURE_PLATE(147),
-	HEAVY_WEIGHTED_PRESSURE_PLATE(148),
-	UNPOWERED_COMPARATOR(149),
-	POWERED_COMPARATOR(150),
-	DAYLIGHT_DETECTOR(151),
-	REDSTONE_BLOCK(152), // √
-	QUARTZ_ORE(153), // √
-	HOPPER(154),
-	QUARTZ_BLOCK(155), // √
-	QUARTZ_STAIRS(156),
-	ACTIVATOR_RAIL(157), // √
-	DROPPER(158),
-	STAINED_HARDENED_CLAY(159), // √
-	STAINED_GLASS_PANE(160), // √
-	LEAVES2(161),
-	LOG2(162),
-	ACACIA_STAIRS(163),
-	DARK_OAK_STAIRS(164),
-	SLIME_BLOCK(165), // √
-	BARRIER(166), // √
-	IRON_TRAPDOOR(167),
-	PRISMARINE(168),
-	SEA_LANTERN(169), // √
-	HAY_BLOCK(170),
-	CARPET(171), // √
-	HARDENED_CLAY(172), // √
-	COAL_BLOCK(173), // √
-	PACKED_ICE(174), // √
-	DOUBLE_PLANT(175),
-	STANDING_BANNER(176),
-	WALL_BANNER(177),
-	DAYLIGHT_DETECTOR_INVERTED(178),
-	RED_SANDSTONE(179),
-	RED_SANDSTONE_STAIRS(180),
-	DOUBLE_STONE_SLAB2(181),
-	STONE_SLAB2(182),
-	SPRUCE_FENCE_GATE(183),
-	BIRCH_FENCE_GATE(184),
-	JUNGLE_FENCE_GATE(185),
-	DARK_OAK_FENCE_GATE(186),
-	ACACIA_FENCE_GATE(187),
-	SPRUCE_FENCE(188), // √
-	BIRCH_FENCE(189), // √
-	JUNGLE_FENCE(190), // √
-	DARK_OAK_FENCE(191), // √
-	ACACIA_FENCE(192), // √
-	SPRUCE_DOOR(193), // √
-	BIRCH_DOOR(194), // √
-	JUNGLE_DOOR(195), // √
-	ACACIA_DOOR(196), // √
-	DARK_OAK_DOOR(197); // √
-	
+public class Material {
 	private int value;
-	private Material(int value) {
+	private int transparency;
+	
+	private Material(int value, int transparency) {
 		this.value = value;
+		this.transparency = transparency;
 	}
+	
+	/**
+	 * Returns the value of this material (block ID)
+	 * 
+	 * @return The block ID
+	 */
 	public int getValue() {
 		return value;
 	}
+	
+	/**
+	 * Returns the transparency level of this material
+	 * 
+	 * @return The transparency level
+	 */
+	public int getTransparency() {
+		return transparency;
+	}
+	
+	public static final Material AIR = new Material(0, 1); // √
+	public static final Material STONE = new Material(1, 0); // √
+	public static final Material GRASS = new Material(2, 0); // √
+	public static final Material DIRT = new Material(3, 0); // √
+	public static final Material COBBLESTONE = new Material(4, 0); // √
+	public static final Material PLANKS = new Material(5, 0); // √
+	public static final Material SAPLING = new Material(6, 1);
+	public static final Material BEDROCK = new Material(7, 0); // √
+	public static final Material FLOWING_WATER = new Material(8, 2);
+	public static final Material WATER = new Material(9, 2); // √
+	public static final Material FLOWING_LAVA = new Material(10, 1);
+	public static final Material LAVA = new Material(11, 1); // √
+	public static final Material SAND = new Material(12, 0); // √
+	public static final Material GRAVEL = new Material(13, 0); // √
+	public static final Material GOLD_ORE = new Material(14, 0); // √
+	public static final Material IRON_ORE = new Material(15, 0); // √
+	public static final Material COAL_ORE = new Material(16, 0); // √
+	public static final Material LOG = new Material(17, 0);
+	public static final Material LEAVES = new Material(18, 2); // Diffuses sky light
+	public static final Material SPONGE = new Material(19, 0);
+	public static final Material GLASS = new Material(20, 1); // √
+	public static final Material LAPIS_ORE = new Material(21, 0); // √
+	public static final Material LAPIS_BLOCK = new Material(22, 0); // √
+	public static final Material DISPENSER = new Material(23, 0);
+	public static final Material SANDSTONE = new Material(24, 0); // √
+	public static final Material NOTEBLOCK = new Material(25, 0);
+	public static final Material BED = new Material(26, 1);
+	public static final Material GOLDEN_RAIL = new Material(27, 1); // √
+	public static final Material DETECTOR_RAIL = new Material(28, 1); // √
+	public static final Material STICKY_PISTON = new Material(29, 1);
+	public static final Material WEB = new Material(30, 2); // √, Diffuses sky light
+	public static final Material TALLGRASS = new Material(31, 1);
+	public static final Material DEADBUSH = new Material(32, 1); // √
+	public static final Material PISTON = new Material(33, 1);
+	public static final Material PISTON_HEAD = new Material(34, 1);
+	public static final Material WOOL = new Material(35, 0); // √
+	public static final Material PISTON_EXTENSION = new Material(36, 1);
+	public static final Material YELLOW_FLOWER = new Material(37, 1); // √
+	public static final Material RED_FLOWER = new Material(38, 0);
+	public static final Material BROWN_MUSHROOM = new Material(39, 1); // √
+	public static final Material RED_MUSHROOM = new Material(40, 1); // √
+	public static final Material GOLD_BLOCK = new Material(41, 0); // √
+	public static final Material IRON_BLOCK = new Material(42, 0); // √
+	public static final Material DOUBLE_STONE_SLAB = new Material(43, 0);
+	public static final Material STONE_SLAB = new Material(44, 1);
+	public static final Material BRICK_BLOCK = new Material(45, 0); // √
+	public static final Material TNT = new Material(46, 0);
+	public static final Material BOOKSHELF = new Material(47, 0); // √
+	public static final Material MOSSY_COBBLESTONE = new Material(48, 0); // √
+	public static final Material OBSIDIAN = new Material(49, 0); // √
+	public static final Material TORCH = new Material(50, 1);
+	public static final Material FIRE = new Material(51, 1);
+	public static final Material MOB_SPAWNER = new Material(52, 0); // Only graphical transparency
+	public static final Material OAK_STAIRS = new Material(53, 0); // Partial transparency
+	public static final Material CHEST = new Material(54, 1);
+	public static final Material REDSTONE_WIRE = new Material(55, 1);
+	public static final Material DIAMOND_ORE = new Material(56, 0); // √
+	public static final Material DIAMOND_BLOCK = new Material(57, 0); // √
+	public static final Material CRAFTING_TABLE = new Material(58, 0); // √
+	public static final Material WHEAT = new Material(59, 1);
+	public static final Material FARMLAND = new Material(60, 0); // Partial transparency
+	public static final Material FURNACE = new Material(61, 0);
+	public static final Material LIT_FURNACE = new Material(62, 0);
+	public static final Material STANDING_SIGN = new Material(63, 1);
+	public static final Material WOODEN_DOOR = new Material(64, 1); // √
+	public static final Material LADDER = new Material(65, 1);
+	public static final Material RAIL = new Material(66, 1); // √
+	public static final Material STONE_STAIRS = new Material(67, 0); // Partial transparency
+	public static final Material WALL_SIGN = new Material(68, 0);
+	public static final Material LEVER = new Material(69, 1);
+	public static final Material STONE_PRESSURE_PLATE = new Material(70, 1);
+	public static final Material IRON_DOOR = new Material(71, 1); // √
+	public static final Material WOODEN_PRESSURE_PLATE = new Material(72, 1);
+	public static final Material REDSTONE_ORE = new Material(73, 0); // √
+	public static final Material LIT_REDSTONE_ORE = new Material(74, 1); // √
+	public static final Material UNLIT_REDSTONE_TORCH = new Material(75, 1); // √
+	public static final Material REDSTONE_TORCH = new Material(76, 1); // √
+	public static final Material STONE_BUTTON = new Material(77, 1);
+	public static final Material SNOW_LAYER = new Material(78, 1);
+	public static final Material ICE = new Material(79, 2); // √
+	public static final Material SNOW = new Material(80, 1); // √
+	public static final Material CACTUS = new Material(81, 1);
+	public static final Material CLAY = new Material(82, 0); // √
+	public static final Material REEDS = new Material(83, 1);
+	public static final Material JUKEBOX = new Material(84, 0);
+	public static final Material FENCE = new Material(85, 1); // √
+	public static final Material PUMPKIN = new Material(86, 0);
+	public static final Material NETHERRACK = new Material(87, 0); // √
+	public static final Material SOUL_SAND = new Material(88, 0); // √
+	public static final Material GLOWSTONE = new Material(89, 1); // √
+	public static final Material PORTAL = new Material(90, 1); // √
+	public static final Material LIT_PUMPKIN = new Material(91, 0);
+	public static final Material CAKE = new Material(92, 1);
+	public static final Material UNPOWERED_REPEATER = new Material(93, 1);
+	public static final Material POWERED_REPEATER = new Material(94, 1);
+	public static final Material STAINED_GLASS = new Material(95, 1); // √
+	public static final Material TRAPDOOR = new Material(96, 1);
+	public static final Material MONSTER_EGG = new Material(97, 0);
+	public static final Material STONEBRICK = new Material(98, 0); // √
+	public static final Material BROWN_MUSHROOM_BLOCK = new Material(99, 0);
+	public static final Material RED_MUSHROOM_BLOCK = new Material(100, 0);
+	public static final Material IRON_BARS = new Material(101, 1); // √
+	public static final Material GLASS_PANE = new Material(102, 1); // √
+	public static final Material MELON_BLOCK = new Material(103, 0); // √
+	public static final Material PUMPKIN_STEM = new Material(104, 1);
+	public static final Material MELON_STEM = new Material(105, 1);
+	public static final Material VINE = new Material(106, 1);
+	public static final Material FENCE_GATE = new Material(107, 1);
+	public static final Material BRICK_STAIRS = new Material(108, 0); // Partial transparency
+	public static final Material STONE_BRICK_STAIRS = new Material(109, 0); // Partial transparency
+	public static final Material MYCELIUM = new Material(110, 0); // √
+	public static final Material WATERLILY = new Material(111, 1); // √
+	public static final Material NETHER_BRICK = new Material(112, 0); // √
+	public static final Material NETHER_BRICK_FENCE = new Material(113, 1); // √
+	public static final Material NETHER_BRICK_STAIRS = new Material(114, 0); // Partial transparency
+	public static final Material NETHER_WART = new Material(115, 1);
+	public static final Material ENCHANTING_TABLE = new Material(116, 1);
+	public static final Material BREWING_STAND = new Material(117, 1);
+	public static final Material CAULDRON = new Material(118, 1);
+	public static final Material END_PORTAL = new Material(119, 1);
+	public static final Material END_PORTAL_FRAME = new Material(120, 0);
+	public static final Material END_STONE = new Material(121, 0); // √
+	public static final Material DRAGON_EGG = new Material(122, 1); // √
+	public static final Material REDSTONE_LAMP = new Material(123, 0); // √
+	public static final Material LIT_REDSTONE_LAMP = new Material(124, 1); // √
+	public static final Material DOUBLE_WOODEN_SLAB = new Material(125, 0);
+	public static final Material WOODEN_SLAB = new Material(126, 1);
+	public static final Material COCOA = new Material(127, 1);
+	public static final Material SANDSTONE_STAIRS = new Material(128, 0); // Partial transparency
+	public static final Material EMERALD_ORE = new Material(129, 0); // √
+	public static final Material ENDER_CHEST = new Material(130, 1);
+	public static final Material TRIPWIRE_HOOK = new Material(131, 1);
+	public static final Material TRIPWIRE = new Material(132, 1);
+	public static final Material EMERALD_BLOCK = new Material(133, 0); // √
+	public static final Material SPRUCE_STAIRS = new Material(134, 0); // Partial transparency
+	public static final Material BIRCH_STAIRS = new Material(135, 0); // Partial transparency
+	public static final Material JUNGLE_STAIRS = new Material(136, 0); // Partial transparency
+	public static final Material COMMAND_BLOCK = new Material(137, 0);
+	public static final Material BEACON = new Material(138, 1);
+	public static final Material COBBLESTONE_WALL = new Material(139, 1);
+	public static final Material FLOWER_POT = new Material(140, 1);
+	public static final Material CARROTS = new Material(141, 1);
+	public static final Material POTATOES = new Material(142, 1);
+	public static final Material WOODEN_BUTTON = new Material(143, 1);
+	public static final Material SKULL = new Material(144, 1);
+	public static final Material ANVIL = new Material(145, 1);
+	public static final Material TRAPPED_CHEST = new Material(146, 1);
+	public static final Material LIGHT_WEIGHTED_PRESSURE_PLATE = new Material(147, 1);
+	public static final Material HEAVY_WEIGHTED_PRESSURE_PLATE = new Material(148, 1);
+	public static final Material UNPOWERED_COMPARATOR = new Material(149, 1);
+	public static final Material POWERED_COMPARATOR = new Material(150, 1);
+	public static final Material DAYLIGHT_DETECTOR = new Material(151, 1);
+	public static final Material REDSTONE_BLOCK = new Material(152, 0); // √, Partial transparency
+	public static final Material QUARTZ_ORE = new Material(153, 0); // √
+	public static final Material HOPPER = new Material(154, 1);
+	public static final Material QUARTZ_BLOCK = new Material(155, 0); // √
+	public static final Material QUARTZ_STAIRS = new Material(156, 0); // Partial transparency
+	public static final Material ACTIVATOR_RAIL = new Material(157, 1); // √
+	public static final Material DROPPER = new Material(158, 0);
+	public static final Material STAINED_HARDENED_CLAY = new Material(159, 0); // √
+	public static final Material STAINED_GLASS_PANE = new Material(160, 1); // √
+	public static final Material LEAVES2 = new Material(161, 2); // Diffuses sky light
+	public static final Material LOG2 = new Material(162, 0);
+	public static final Material ACACIA_STAIRS = new Material(163, 0); // Partial transparency
+	public static final Material DARK_OAK_STAIRS = new Material(164, 0); // Partial transparency
+	public static final Material SLIME_BLOCK = new Material(165, 1); // √
+	public static final Material BARRIER = new Material(166, 1); // √
+	public static final Material IRON_TRAPDOOR = new Material(167, 1);
+	public static final Material PRISMARINE = new Material(168, 0);
+	public static final Material SEA_LANTERN = new Material(169, 1); // √, Transparency not clear
+	public static final Material HAY_BLOCK = new Material(170, 0);
+	public static final Material CARPET = new Material(171, 1); // √
+	public static final Material HARDENED_CLAY = new Material(172, 0); // √
+	public static final Material COAL_BLOCK = new Material(173, 0); // √
+	public static final Material PACKED_ICE = new Material(174, 0); // √
+	public static final Material DOUBLE_PLANT = new Material(175, 1); // Transparency not clear
+	public static final Material STANDING_BANNER = new Material(176, 1);
+	public static final Material WALL_BANNER = new Material(177, 1);
+	public static final Material DAYLIGHT_DETECTOR_INVERTED = new Material(178, 1);
+	public static final Material RED_SANDSTONE = new Material(179, 0);
+	public static final Material RED_SANDSTONE_STAIRS = new Material(180, 0); // Partial transparency
+	public static final Material DOUBLE_STONE_SLAB2 = new Material(181, 0);
+	public static final Material STONE_SLAB2 = new Material(182, 1);
+	public static final Material SPRUCE_FENCE_GATE = new Material(183, 1);
+	public static final Material BIRCH_FENCE_GATE = new Material(184, 1);
+	public static final Material JUNGLE_FENCE_GATE = new Material(185, 1);
+	public static final Material DARK_OAK_FENCE_GATE = new Material(186, 1);
+	public static final Material ACACIA_FENCE_GATE = new Material(187, 1);
+	public static final Material SPRUCE_FENCE = new Material(188, 1); // √
+	public static final Material BIRCH_FENCE = new Material(189, 1); // √
+	public static final Material JUNGLE_FENCE = new Material(190, 1); // √
+	public static final Material DARK_OAK_FENCE = new Material(191, 1); // √
+	public static final Material ACACIA_FENCE = new Material(192, 1); // √
+	public static final Material SPRUCE_DOOR = new Material(193, 1); // √
+	public static final Material BIRCH_DOOR = new Material(194, 1); // √
+	public static final Material JUNGLE_DOOR = new Material(195, 1); // √
+	public static final Material ACACIA_DOOR = new Material(196, 1); // √
+	public static final Material DARK_OAK_DOOR = new Material(197, 1); // √
 }

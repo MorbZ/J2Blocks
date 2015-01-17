@@ -113,6 +113,14 @@ public class RailBlock implements IBlock {
 		return (byte)value;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getTransparency() {
+		return 1;
+	}
+	
 	@SuppressWarnings("javadoc")
 	public enum RailCurve {
 		SOUTH_EAST(6),

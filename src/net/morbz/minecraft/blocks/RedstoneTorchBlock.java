@@ -82,4 +82,12 @@ public class RedstoneTorchBlock implements IBlock {
 		}
 		return data;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getTransparency() {
+		return 1;
+	}
 }

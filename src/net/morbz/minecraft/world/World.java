@@ -48,6 +48,16 @@ public class World {
 	 */
 	public static final int MAX_HEIGHT = 256;
 	
+	/**
+	 * The default transparency level (fully transparent)
+	 */
+	public static final byte DEFAULT_TRANSPARENCY = 1;
+	
+	/**
+	 * The default sky light level (maximal light)
+	 */
+	public static final byte DEFAULT_SKY_LIGHT = 0xF;
+	
 	private Map<Point, Region> regions = new HashMap<Point, Region>();
 	private Level level;
 	private DefaultLayers layers;
@@ -87,6 +97,16 @@ public class World {
 			return;
 		}
 		
+		// Get region
+		Region region = getRegion(x, z, true);
+		
+		// Set block
+		int blockX = getRegionCoord(x);
+		int blockZ = getRegionCoord(z);
+		region.setBlock(blockX, y, blockZ, block);
+	}
+	
+	private Region getRegion(int x, int z, boolean create) {
 		// Get region point
 		int regionX = x / Region.BLOCKS_PER_REGION_SIDE;
 		if(x < 0) {
@@ -100,21 +120,57 @@ public class World {
 		
 		// Create region
 		Region region = regions.get(point);
-		if(region == null) {
+		if(region == null && create) {
 			region = new Region(layers);
 			regions.put(point, region);
 		}
+		return region;	
+	}
+	
+	private int getRegionCoord(int coord) {
+		int regionCoord = coord % Region.BLOCKS_PER_REGION_SIDE;
+		if(regionCoord < 0) {
+			regionCoord += Region.BLOCKS_PER_REGION_SIDE;
+		}
+		return regionCoord;
+	}
+	
+	private byte getTransparency(int x, int y, int z) {
+		// Get region
+		Region region = getRegion(x, z, false);
 		
-		// Set block
-		int blockX = x % Region.BLOCKS_PER_REGION_SIDE;
-		if(blockX < 0) {
-			blockX += Region.BLOCKS_PER_REGION_SIDE;
+		// Get transparency
+		if(region != null) {
+			int blockX = getRegionCoord(x);
+			int blockZ = getRegionCoord(z);
+			return region.getTransparency(blockX, y, blockZ);
 		}
-		int blockZ = z % Region.BLOCKS_PER_REGION_SIDE;
-		if(blockZ < 0) {
-			blockZ += Region.BLOCKS_PER_REGION_SIDE;
+		return DEFAULT_TRANSPARENCY;
+	}
+	
+	private byte getSkyLight(int x, int y, int z) {
+		// Get region
+		Region region = getRegion(x, z, false);
+		
+		// Get light
+		if(region != null) {
+			int blockX = getRegionCoord(x);
+			int blockZ = getRegionCoord(z);
+			return region.getSkyLight(blockX, y, blockZ);
 		}
-		region.setBlock(blockX, y, blockZ, block);
+		return DEFAULT_SKY_LIGHT;
+	}
+	
+	private void setSkyLight(int x, int y, int z, byte light) {
+		// Get region
+		Region region = getRegion(x, z, false);
+		
+		// Set light
+		if(region != null) {
+			int blockX = getRegionCoord(x);
+			int blockZ = getRegionCoord(z);
+			region.setSkyLight(blockX, y, blockZ, light);
+		}
 	}
 	
 	/**
@@ -124,7 +180,6 @@ public class World {
 	 * @return The directory in which the world has been saved
 	 * @throws IOException When file writing fails
 	 */
-	// TODO: Set spawn position to the center of all set blocks
 	public File save() throws IOException {
 		// Create worlds directory
 		File worldDir = new File("worlds");
@@ -176,6 +231,18 @@ public class World {
 			region.calculateHeightMap();
 		}
 		
+		// Set sky light
+		System.out.println("Adding sky light");
+		addSkyLight();
+		
+		// Spread sky light
+		System.out.print("Spreading sky light ");
+		for(int i = DEFAULT_SKY_LIGHT; i > 1; i--) {
+			spreadSkyLight(i);
+			System.out.print(".");
+		}
+		System.out.println();
+		
 		// Iterate regions
 		for(Map.Entry<Point, Region> entry : regions.entrySet()) {
 			Point point = entry.getKey();
@@ -189,6 +256,98 @@ public class World {
 		
 		System.out.println("Done");
 		return levelDir;
+	}
+	
+	/**
+	 * Adds the sky light. Starts from top the top of each column and sets sky light to full, up to 
+	 * the first non-transparent block.
+	 */
+	private void addSkyLight() {
+		for(Region region : regions.values()) {
+			for(int regionX = 0; regionX < Region.BLOCKS_PER_REGION_SIDE; regionX++) {
+				for(int regionZ = 0; regionZ < Region.BLOCKS_PER_REGION_SIDE; regionZ++) {
+					int highestBlock = region.getHighestBlock(regionX, regionZ);
+					for(int y = MAX_HEIGHT - 1; y > highestBlock; y--) {
+						region.setSkyLight(regionX, y, regionZ, DEFAULT_SKY_LIGHT);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Spreads the skylight. For each block that has the given light level it's adjacent blocks will
+	 * be lit if their current light level is lower.
+	 */
+	// TODO: Improve performance
+	// TODO: Fix unlit parts at world borders
+	private void spreadSkyLight(int light) {
+		for(Map.Entry<Point, Region> entry : regions.entrySet()) {
+			Point point = entry.getKey();
+			Region region = entry.getValue();
+			byte newLight = (byte)light;
+			
+			int regionOffsetX = point.x * Region.BLOCKS_PER_REGION_SIDE;
+			int regionOffsetZ = point.y * Region.BLOCKS_PER_REGION_SIDE;
+			
+			for(int regionX = 0; regionX < Region.BLOCKS_PER_REGION_SIDE; regionX++) {
+				for(int regionZ = 0; regionZ < Region.BLOCKS_PER_REGION_SIDE; regionZ++) {
+					for(int y = 0; y < MAX_HEIGHT; y++) {
+						int x = regionOffsetX + regionX;
+						int z = regionOffsetZ + regionZ;
+						
+						// Get sky light
+						int currentLight = region.getSkyLight(regionX, y, regionZ);
+						if(currentLight == light) {
+							// Update adjacent blocks
+							spreadSkyLightForBlock(x, y, z, newLight);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Spreads the light from the given block. All adjacent blocks that have a lower light level
+	 * than the given will be updated.
+	 */
+	private void spreadSkyLightForBlock(int x, int y, int z, byte light) {
+		increaseSkyLight(x+1, y, z, light);
+		increaseSkyLight(x-1, y, z, light);
+		increaseSkyLight(x, y+1, z, light);
+		increaseSkyLight(x, y-1, z, light);
+		increaseSkyLight(x, y, z+1, light);
+		increaseSkyLight(x, y, z-1, light);
+	}
+	
+	/**
+	 * Updates the sky light if the current light level is lower than the given.
+	 */
+	private void increaseSkyLight(int x, int y, int z, byte light) {
+		// Check Y-coordinate
+		if(y > MAX_HEIGHT - 1 || y < 0) {
+			return;
+		}
+		
+		// Calculate new light level
+		byte transparency = getTransparency(x, y, z);
+		if(transparency == 0) {
+			return;
+		}
+		if(transparency == 1) {
+			light--;
+		} else if(transparency > 1) {
+			light -= 1 + transparency;
+		}
+		if(transparency < 1) {
+			return;
+		}
+		
+		// Update is current light is lower
+		if(getSkyLight(x, y, z) < light) {
+			setSkyLight(x, y, z, light);
+		}
 	}
 	
 	private boolean dirExists(File f) {

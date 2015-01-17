@@ -44,4 +44,12 @@ public interface IBlock {
 	 * @return The block data. Only the 4 rightmost bits are relevant.
 	 */
 	public byte getBlockData();
+	
+	/**
+	 * Returns the transparency level of this block. 0 means fully opaque, 1 means fully transparent
+	 * and values > 1 mean transparent but the light level is decreased by n at this block.
+	 * 
+	 * @return The transparency level
+	 */
+	public int getTransparency();
 }

@@ -37,7 +37,7 @@ import org.jnbt.NBTOutputStream;
  * 
  * @author MorbZ
  */
-public class Region {
+public class Region implements IBlockContainer {
 	/**
 	 * Chunks per region side
 	 */
@@ -69,21 +69,95 @@ public class Region {
 	 * @param block The block
 	 */
 	public void setBlock(int x, int y, int z, IBlock block) {
-		// Get chunk coords
-		int chunkX = x / Chunk.BLOCKS_PER_CHUNK_SIDE;
-		int chunkZ = z / Chunk.BLOCKS_PER_CHUNK_SIDE;
-		
-		// Create chunk
-		Chunk chunk = chunks[chunkX][chunkZ];
-		if(chunk == null) {
-			chunk = new Chunk(chunkX, chunkZ, layers);
-			chunks[chunkX][chunkZ] = chunk;
-		}
+		// Get chunk 
+		Chunk chunk = getChunk(x, z, true);
 		
 		// Set block
 		int blockX = x % Chunk.BLOCKS_PER_CHUNK_SIDE;
 		int blockZ = z % Chunk.BLOCKS_PER_CHUNK_SIDE;
 		chunk.setBlock(blockX, y, blockZ, block);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte getTransparency(int x, int y, int z) {
+		// Get chunk 
+		Chunk chunk = getChunk(x, z, false);
+		
+		if(chunk != null) {
+			int blockX = x % Chunk.BLOCKS_PER_CHUNK_SIDE;
+			int blockZ = z % Chunk.BLOCKS_PER_CHUNK_SIDE;
+			byte light = chunk.getTransparency(blockX, y, blockZ);
+			return light;
+		}
+		return World.DEFAULT_TRANSPARENCY;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte getSkyLight(int x, int y, int z) {
+		// Get chunk 
+		Chunk chunk = getChunk(x, z, false);
+		
+		if(chunk != null) {
+			int blockX = x % Chunk.BLOCKS_PER_CHUNK_SIDE;
+			int blockZ = z % Chunk.BLOCKS_PER_CHUNK_SIDE;
+			byte light = chunk.getSkyLight(blockX, y, blockZ);
+			return light;
+		}
+		return World.DEFAULT_SKY_LIGHT;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setSkyLight(int x, int y, int z, byte light) {
+		// Get chunk 
+		Chunk chunk = getChunk(x, z, false);
+		
+		if(chunk != null) {
+			int blockX = x % Chunk.BLOCKS_PER_CHUNK_SIDE;
+			int blockZ = z % Chunk.BLOCKS_PER_CHUNK_SIDE;
+			chunk.setSkyLight(blockX, y, blockZ, light);
+		}
+	}
+	
+	/**
+	 * Returns the highest non transparent block. calculateHeightMap() has to be invoked before
+	 * calling this method to get actual results.
+	 * 
+	 * @param x The X-coordinate
+	 * @param z The Z-coordinate
+	 * @return The Y-coordinate of the highest block
+	 */
+	public int getHighestBlock(int x, int z) {
+		// Get chunk 
+		Chunk chunk = getChunk(x, z, false);
+		if(chunk != null) {
+			int blockX = x % Chunk.BLOCKS_PER_CHUNK_SIDE;
+			int blockZ = z % Chunk.BLOCKS_PER_CHUNK_SIDE;
+			return chunk.getHighestBlock(blockX, blockZ);
+		}
+		return 0;
+	}
+	
+	private Chunk getChunk(int x, int z, boolean create) {
+		// Make chunk coords
+		int chunkX = x / Chunk.BLOCKS_PER_CHUNK_SIDE;
+		int chunkZ = z / Chunk.BLOCKS_PER_CHUNK_SIDE;
+		Chunk chunk = chunks[chunkX][chunkZ];
+		
+		// Create chunk
+		if(chunk == null && create) {
+			chunk = new Chunk(chunkX, chunkZ, layers);
+			chunks[chunkX][chunkZ] = chunk;
+		}
+		return chunk;
 	}
 	
 	/**

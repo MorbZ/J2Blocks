@@ -122,6 +122,14 @@ public class DoorBlock implements IBlock {
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getTransparency() {
+		return 1;
+	}
+	
+	/**
 	 * The site on which the hinge is.
 	 */
 	@SuppressWarnings("javadoc")

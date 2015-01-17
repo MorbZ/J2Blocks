@@ -58,4 +58,12 @@ public class PlanksBlock implements IBlock {
 	public byte getBlockData() {
 		return (byte)wood.getValue();
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getTransparency() {
+		return 0;
+	}
 }

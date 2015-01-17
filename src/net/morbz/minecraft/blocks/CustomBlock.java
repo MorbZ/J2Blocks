@@ -31,17 +31,19 @@ package net.morbz.minecraft.blocks;
  * @author MorbZ
  */
 public class CustomBlock implements IBlock {
-	private int blockId, blockData;
+	private int blockId, blockData, transparency;
 	
 	/**
 	 * Creates a new instance.
 	 * 
 	 * @param blockId The block ID
 	 * @param blockData The block data
+	 * @param transparency The transparency of the block
 	 */
-	public CustomBlock(int blockId, int blockData) {
+	public CustomBlock(int blockId, int blockData, int transparency) {
 		this.blockId = blockId;
 		this.blockData = blockData;
+		this.transparency = transparency;
 	}
 	
 	/**
@@ -58,5 +60,13 @@ public class CustomBlock implements IBlock {
 	@Override
 	public byte getBlockData() {
 		return (byte)blockData;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getTransparency() {
+		return transparency;
 	}
 }

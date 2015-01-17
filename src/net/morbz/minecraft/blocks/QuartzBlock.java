@@ -70,6 +70,14 @@ public class QuartzBlock implements IBlock {
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getTransparency() {
+		return 0;
+	}
+	
+	/**
 	 * The variant of the quartz block. Except pillar which is a special type because it has facing
 	 * data.
 	 */

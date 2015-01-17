@@ -117,6 +117,14 @@ public class SpecialRailBlock implements IBlock {
 		}
 		return data;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getTransparency() {
+		return 1;
+	}
 
 	/**
 	 * The type of the special rail.

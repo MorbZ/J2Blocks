@@ -115,4 +115,12 @@ public enum SimpleBlock implements IBlock {
 	public byte getBlockData() {
 		return 0;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getTransparency() {
+		return material.getTransparency();
+	}
 }

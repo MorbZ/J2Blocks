@@ -49,7 +49,7 @@ public class StainedBlock implements IBlock {
 	 */
 	@Override
 	public byte getBlockId() {
-		return (byte)material.getValue();
+		return (byte)material.material.getValue();
 	}
 	
 	/**
@@ -61,23 +61,31 @@ public class StainedBlock implements IBlock {
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getTransparency() {
+		return material.transparency;
+	}
+	
+	/**
 	 * The material of the stained block.
 	 */
 	@SuppressWarnings("javadoc")
-	public enum StainedMaterial {
-		WOOL(Material.WOOL),
-		GLASS(Material.STAINED_GLASS),
-		CLAY(Material.STAINED_HARDENED_CLAY),
-		GLASS_PANE(Material.STAINED_GLASS_PANE),
-		CARPET(Material.CARPET);
+	public static class StainedMaterial {
+		public Material material;
+		public int transparency;
 		
-		private Material material;
-		private StainedMaterial(Material material) {
+		private StainedMaterial(Material material, int transparency) {
 			this.material = material;
+			this.transparency = transparency;
 		}
-		public int getValue() {
-			return material.getValue();
-		}
+		
+		public static final StainedMaterial WOOL = new StainedMaterial(Material.WOOL, 0);
+		public static final StainedMaterial GLASS = new StainedMaterial(Material.STAINED_GLASS, 1);
+		public static final StainedMaterial CLAY = new StainedMaterial(Material.STAINED_HARDENED_CLAY, 0);
+		public static final StainedMaterial GLASS_PANE = new StainedMaterial(Material.STAINED_GLASS_PANE, 1);
+		public static final StainedMaterial CARPET = new StainedMaterial(Material.CARPET, 1);
 	}
 	
 	/**

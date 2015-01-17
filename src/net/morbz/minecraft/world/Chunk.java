@@ -44,7 +44,7 @@ import org.jnbt.Tag;
  * 
  * @author MorbZ
  */
-public class Chunk implements ITagProvider {
+public class Chunk implements ITagProvider, IBlockContainer {
 	/**
 	 * Sections per chunk
 	 */
@@ -77,7 +77,7 @@ public class Chunk implements ITagProvider {
 				Material material = layers.getLayer(y);
 				if(material != null) {
 					// Create block
-					CustomBlock block = new CustomBlock(material.getValue(), 0);
+					CustomBlock block = new CustomBlock(material.getValue(), 0, material.getTransparency());
 					
 					// Iterate area
 					for(int x = 0; x < BLOCKS_PER_CHUNK_SIDE; x++) {
@@ -100,17 +100,83 @@ public class Chunk implements ITagProvider {
 	 * @param block The block
 	 */
 	public void setBlock(int x, int y, int z, IBlock block) {
-		// Create section
-		int sectionY = y / Section.SECTION_HEIGHT;
-		Section section = sections[sectionY];
-		if(section == null) {
-			section = new Section(sectionY);
-			sections[sectionY] = section;
-		}
+		// Get section
+		Section section = getSection(y, true);
 		
 		// Set block
 		int blockY = y % Section.SECTION_HEIGHT;
 		section.setBlock(x, blockY, z, block);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte getTransparency(int x, int y, int z) {
+		// Get section
+		Section section = getSection(y, false);
+		
+		if(section != null) {
+			int blockY = y % Section.SECTION_HEIGHT;
+			byte light = section.getTransparency(x, blockY, z);
+			return light;
+		}
+		return World.DEFAULT_TRANSPARENCY;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte getSkyLight(int x, int y, int z) {
+		// Get section
+		Section section = getSection(y, false);
+		
+		if(section != null) {
+			int blockY = y % Section.SECTION_HEIGHT;
+			byte light = section.getSkyLight(x, blockY, z);
+			return light;
+		}
+		return World.DEFAULT_SKY_LIGHT;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setSkyLight(int x, int y, int z, byte light) {
+		// Get section
+		Section section = getSection(y, false);
+		
+		if(section != null) {
+			int blockY = y % Section.SECTION_HEIGHT;
+			section.setSkyLight(x, blockY, z, light);
+		}
+	}
+	
+	/**
+	 * Returns the highest non transparent block. calculateHeightMap() has to be invoked before
+	 * calling this method to get actual results.
+	 * 
+	 * @param x The X-coordinate
+	 * @param z The Z-coordinate
+	 * @return The Y-coordinate of the highest block
+	 */
+	public int getHighestBlock(int x, int z) {
+		return heightMap[x][z];
+	}
+	
+	private Section getSection(int y, boolean create) {
+		// Get section
+		int sectionY = y / Section.SECTION_HEIGHT;
+		Section section = sections[sectionY];
+		
+		// Create section
+		if(section == null && create) {
+			section = new Section(sectionY);
+			sections[sectionY] = section;
+		}
+		return section;
 	}
 	
 	/**

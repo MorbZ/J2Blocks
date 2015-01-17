@@ -37,7 +37,7 @@ import org.jnbt.Tag;
  * 
  * @author MorbZ
  */
-public class Section implements ITagProvider {
+public class Section implements ITagProvider, IBlockContainer {
 	/**
 	 * The height in blocks of a section
 	 */
@@ -50,7 +50,9 @@ public class Section implements ITagProvider {
 		Chunk.BLOCKS_PER_CHUNK_SIDE * Chunk.BLOCKS_PER_CHUNK_SIDE * SECTION_HEIGHT;
 	
 	private byte[] blockIds = new byte[BLOCKS_PER_SECTION];
+	private byte[] transparency = new byte[BLOCKS_PER_SECTION];
 	private NibbleArray blockData = new NibbleArray(BLOCKS_PER_SECTION);
+	private NibbleArray skyLight = new NibbleArray(BLOCKS_PER_SECTION);
 	private int blockCount = 0;
 	private int y;
 	
@@ -61,6 +63,11 @@ public class Section implements ITagProvider {
 	 */
 	public Section(int y) {
 		this.y = y;
+		
+		// Set default transparency
+		for(int i = 0; i < transparency.length; i++) {
+			transparency[i] = World.DEFAULT_TRANSPARENCY;
+		}
 	}
 	
 	/**
@@ -89,10 +96,40 @@ public class Section implements ITagProvider {
 		if(block != null) {
 			blockIds[index] = block.getBlockId();
 			blockData.set(index, block.getBlockData());
+			transparency[index] = (byte)block.getTransparency();
 		} else {
 			blockIds[index] = 0;
 			blockData.set(index, (byte)0);
+			transparency[index] = World.DEFAULT_TRANSPARENCY;
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte getTransparency(int x, int y, int z) {
+		int index = getBlockIndex(x, y, z);
+		return transparency[index];
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte getSkyLight(int x, int y, int z) {
+		int index = getBlockIndex(x, y, z);
+		byte light = skyLight.get(index);
+		return light;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setSkyLight(int x, int y, int z, byte light) {
+		int index = getBlockIndex(x, y, z);
+		skyLight.set(index, light);
 	}
 	
 	private int getBlockIndex(int x, int y, int z) {
@@ -124,7 +161,7 @@ public class Section implements ITagProvider {
 		// Iterate column
 		for(int y = SECTION_HEIGHT - 1; y >= 0; y--) {
 			int index = getBlockIndex(x, y, z);
-			if(blockIds[index] != 0) {
+			if(blockIds[index] != 0 && transparency[index] != 1) {
 				return y;
 			}
 		}
@@ -136,12 +173,6 @@ public class Section implements ITagProvider {
 	 */
 	@Override
 	public Tag getTag() {
-		// Make all blocks have the same sky light
-		NibbleArray skyLight = new NibbleArray(BLOCKS_PER_SECTION);
-		for(int i = 0; i < skyLight.size(); i++) {
-			skyLight.set(i, (byte)0xF);
-		}
-		
 		// Create tag
 		CompoundTagFactory factory = new CompoundTagFactory("");
 		factory.set(new ByteArrayTag("Blocks", blockIds));
