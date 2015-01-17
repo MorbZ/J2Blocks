@@ -31,35 +31,32 @@ package net.morbz.minecraft.world;
  */
 public interface IBlockContainer {
 	/**
-	 * Returns the transparency level of the block at given position. If there is no block 
-	 * World.DEFAULT_TRANSPARENCY will be returned. 0 means fully opaque, 1 means fully transparent
-	 * and values > 1 mean transparent but the light level is decreased by n at this block.
-	 * 
-	 * @param x The local X-coordinate
-	 * @param y The local Y-coordinate
-	 * @param z The local Z-coordinate
-	 * @return The transparency level
-	 */
-	public byte getTransparency(int x, int y, int z);
-	
-	/**
 	 * Returns the sky light level of the block at given position. If there is no block 
 	 * World.DEFAULT_SKY_LIGHT will be returned.
 	 * 
 	 * @param x The local X-coordinate
 	 * @param y The local Y-coordinate
 	 * @param z The local Z-coordinate
-	 * @return The transparency level
+	 * @return The sky light level
 	 */
 	public byte getSkyLight(int x, int y, int z);
 	
 	/**
-	 * Sets the sky light level of the block at given position.
+	 * Returns the sky light level of a block that is out of bounds of the child block container.
 	 * 
-	 * @param x The local X-coordinate
-	 * @param y The local Y-coordinate
-	 * @param z The local Z-coordinate
-	 * @param light The sky light level
+	 * @param child The child block container
+	 * @param childX The local X-coordinate
+	 * @param childY The local Y-coordinate
+	 * @param childZ The local Z-coordinate
+	 * @return The sky light level
 	 */
-	public void setSkyLight(int x, int y, int z, byte light);
+	public byte getSkyLightFromParent(IBlockContainer child, int childX, int childY, int childZ);
+	
+	/**
+	 * Spreads the skylight. For each block that has the given light level it's adjacent blocks will
+	 * be lit if their current light level is lower.
+	 * 
+	 * @param light The light level
+	 */
+	public void spreadSkyLight(byte light);
 }

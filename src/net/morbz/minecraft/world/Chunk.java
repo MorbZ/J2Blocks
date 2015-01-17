@@ -58,15 +58,18 @@ public class Chunk implements ITagProvider, IBlockContainer {
 	private Section[] sections = new Section[SECTIONS_PER_CHUNK];
 	private int[][] heightMap = new int[BLOCKS_PER_CHUNK_SIDE][BLOCKS_PER_CHUNK_SIDE];
 	private int xPos, zPos;
+	private IBlockContainer parent;
 	
 	/**
 	 * Creates a new instance.
 	 * 
-	 * @param xPos The X-coordinate within the chunk
-	 * @param zPos The Z-coordinate within the chunk
+	 * @param parent The parent block container
+	 * @param xPos The X-coordinate within the region
+	 * @param zPos The Z-coordinate within the region
 	 * @param layers The default layers. Can be 'null'
 	 */
-	public Chunk(int xPos, int zPos, DefaultLayers layers) {
+	public Chunk(IBlockContainer parent, int xPos, int zPos, DefaultLayers layers) {
+		this.parent = parent;
 		this.xPos = xPos;
 		this.zPos = zPos;
 		
@@ -92,6 +95,20 @@ public class Chunk implements ITagProvider, IBlockContainer {
 	}
 	
 	/**
+	 * @return The X-coordinate within the region
+	 */
+	public int getX() {
+		return xPos;
+	}
+	
+	/**
+	 * @return The Z-coordinate within the region
+	 */
+	public int getZ() {
+		return zPos;
+	}
+	
+	/**
 	 * Sets a block at the given position.
 	 * 
 	 * @param x The X-coordinate within the chunk
@@ -112,22 +129,6 @@ public class Chunk implements ITagProvider, IBlockContainer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte getTransparency(int x, int y, int z) {
-		// Get section
-		Section section = getSection(y, false);
-		
-		if(section != null) {
-			int blockY = y % Section.SECTION_HEIGHT;
-			byte light = section.getTransparency(x, blockY, z);
-			return light;
-		}
-		return World.DEFAULT_TRANSPARENCY;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public byte getSkyLight(int x, int y, int z) {
 		// Get section
 		Section section = getSection(y, false);
@@ -140,17 +141,64 @@ public class Chunk implements ITagProvider, IBlockContainer {
 		return World.DEFAULT_SKY_LIGHT;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setSkyLight(int x, int y, int z, byte light) {
+	private void setSkyLight(int x, int y, int z, byte light) {
 		// Get section
 		Section section = getSection(y, false);
 		
 		if(section != null) {
 			int blockY = y % Section.SECTION_HEIGHT;
 			section.setSkyLight(x, blockY, z, light);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte getSkyLightFromParent(IBlockContainer child, int childX, int childY, int childZ) {
+		// Get total Y
+		int y = ((Section)child).getY() * Section.SECTION_HEIGHT + childY;
+		if(y >= World.MAX_HEIGHT) {
+			return World.DEFAULT_SKY_LIGHT;
+		}
+		if(y < 0) {
+			return 0;
+		}
+		
+		// Which chunk?
+		if(childX >= 0 && childX < BLOCKS_PER_CHUNK_SIDE && childZ >= 0 && childZ < BLOCKS_PER_CHUNK_SIDE) {
+			// Same chunk
+			return getSkyLight(childX, y, childZ);
+		} else {
+			// Different chunk
+			return parent.getSkyLightFromParent(this, childX, y, childZ);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void spreadSkyLight(byte light) {
+		for(Section section : sections) {
+			if(section != null) {
+				section.spreadSkyLight(light);
+			}
+		}
+	}
+	
+	/**
+	 * Adds the sky light. Starts from top the top of each column and sets sky light to full, up to 
+	 * the first non-transparent block.
+	 */
+	public void addSkyLight() {
+		for(int x = 0; x < BLOCKS_PER_CHUNK_SIDE; x++) {
+			for(int z = 0; z < BLOCKS_PER_CHUNK_SIDE; z++) {
+				int highestBlock = getHighestBlock(x, z);
+				for(int y = World.MAX_HEIGHT - 1; y >= highestBlock; y--) {
+					setSkyLight(x, y, z, World.DEFAULT_SKY_LIGHT);
+				}
+			}
 		}
 	}
 	
@@ -173,7 +221,7 @@ public class Chunk implements ITagProvider, IBlockContainer {
 		
 		// Create section
 		if(section == null && create) {
-			section = new Section(sectionY);
+			section = new Section(this, sectionY);
 			sections[sectionY] = section;
 		}
 		return section;
@@ -209,7 +257,7 @@ public class Chunk implements ITagProvider, IBlockContainer {
 						if(heightMap[x][z] == 0) {
 							int height = section.getHighestBlock(x, z);
 							if(height != -1) {
-								heightMap[x][z] = y * Section.SECTION_HEIGHT +  height;
+								heightMap[x][z] = y * Section.SECTION_HEIGHT + height + 1;
 							}
 						}
 					}

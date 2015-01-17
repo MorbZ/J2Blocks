@@ -2,6 +2,8 @@
 
 J2Blocks aims to provide a simple library for custom map generation. In order to use this library it is not necessary to deal with things like regions, chunks and block data. However it aims to implement all map features that Minecraft offers. Please keep in mind that this is still beta.
 
+[→ J2Blocks Documentation](http://docs.morbz.de/j2blocks/)
+
 Example
 ------
 In this example we want to create a Minecraft world that is paved with melon-blocks. We want to create a huge structure of glass and want to set door on top of it. From the [Example.java](https://github.com/MorbZ/J2Blocks/blob/master/doc/Example.java):

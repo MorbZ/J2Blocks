@@ -42,7 +42,7 @@ import net.morbz.minecraft.level.Level;
  * 
  * @author MorbZ
  */
-public class World {
+public class World implements IBlockContainer {
 	/**
 	 * Maximal world height
 	 */
@@ -121,7 +121,7 @@ public class World {
 		// Create region
 		Region region = regions.get(point);
 		if(region == null && create) {
-			region = new Region(layers);
+			region = new Region(this, regionX, regionZ, layers);
 			regions.put(point, region);
 		}
 		return region;	
@@ -135,20 +135,11 @@ public class World {
 		return regionCoord;
 	}
 	
-	private byte getTransparency(int x, int y, int z) {
-		// Get region
-		Region region = getRegion(x, z, false);
-		
-		// Get transparency
-		if(region != null) {
-			int blockX = getRegionCoord(x);
-			int blockZ = getRegionCoord(z);
-			return region.getTransparency(blockX, y, blockZ);
-		}
-		return DEFAULT_TRANSPARENCY;
-	}
-	
-	private byte getSkyLight(int x, int y, int z) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte getSkyLight(int x, int y, int z) {
 		// Get region
 		Region region = getRegion(x, z, false);
 		
@@ -160,16 +151,24 @@ public class World {
 		}
 		return DEFAULT_SKY_LIGHT;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte getSkyLightFromParent(IBlockContainer child, int childX, int childY, int childZ) {
+		int x = Region.BLOCKS_PER_REGION_SIDE * ((Region)child).getX() + childX;
+		int z = Region.BLOCKS_PER_REGION_SIDE * ((Region)child).getZ() + childZ;
+		return getSkyLight(x, childY, z);
+	}
 	
-	private void setSkyLight(int x, int y, int z, byte light) {
-		// Get region
-		Region region = getRegion(x, z, false);
-		
-		// Set light
-		if(region != null) {
-			int blockX = getRegionCoord(x);
-			int blockZ = getRegionCoord(z);
-			region.setSkyLight(blockX, y, blockZ, light);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void spreadSkyLight(byte light) {
+		for(Region region : regions.values()) {
+			region.spreadSkyLight(light);
 		}
 	}
 	
@@ -238,7 +237,7 @@ public class World {
 		// Spread sky light
 		System.out.print("Spreading sky light ");
 		for(int i = DEFAULT_SKY_LIGHT; i > 1; i--) {
-			spreadSkyLight(i);
+			spreadSkyLight((byte)i);
 			System.out.print(".");
 		}
 		System.out.println();
@@ -264,89 +263,7 @@ public class World {
 	 */
 	private void addSkyLight() {
 		for(Region region : regions.values()) {
-			for(int regionX = 0; regionX < Region.BLOCKS_PER_REGION_SIDE; regionX++) {
-				for(int regionZ = 0; regionZ < Region.BLOCKS_PER_REGION_SIDE; regionZ++) {
-					int highestBlock = region.getHighestBlock(regionX, regionZ);
-					for(int y = MAX_HEIGHT - 1; y > highestBlock; y--) {
-						region.setSkyLight(regionX, y, regionZ, DEFAULT_SKY_LIGHT);
-					}
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Spreads the skylight. For each block that has the given light level it's adjacent blocks will
-	 * be lit if their current light level is lower.
-	 */
-	// TODO: Improve performance
-	// TODO: Fix unlit parts at world borders
-	private void spreadSkyLight(int light) {
-		for(Map.Entry<Point, Region> entry : regions.entrySet()) {
-			Point point = entry.getKey();
-			Region region = entry.getValue();
-			byte newLight = (byte)light;
-			
-			int regionOffsetX = point.x * Region.BLOCKS_PER_REGION_SIDE;
-			int regionOffsetZ = point.y * Region.BLOCKS_PER_REGION_SIDE;
-			
-			for(int regionX = 0; regionX < Region.BLOCKS_PER_REGION_SIDE; regionX++) {
-				for(int regionZ = 0; regionZ < Region.BLOCKS_PER_REGION_SIDE; regionZ++) {
-					for(int y = 0; y < MAX_HEIGHT; y++) {
-						int x = regionOffsetX + regionX;
-						int z = regionOffsetZ + regionZ;
-						
-						// Get sky light
-						int currentLight = region.getSkyLight(regionX, y, regionZ);
-						if(currentLight == light) {
-							// Update adjacent blocks
-							spreadSkyLightForBlock(x, y, z, newLight);
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Spreads the light from the given block. All adjacent blocks that have a lower light level
-	 * than the given will be updated.
-	 */
-	private void spreadSkyLightForBlock(int x, int y, int z, byte light) {
-		increaseSkyLight(x+1, y, z, light);
-		increaseSkyLight(x-1, y, z, light);
-		increaseSkyLight(x, y+1, z, light);
-		increaseSkyLight(x, y-1, z, light);
-		increaseSkyLight(x, y, z+1, light);
-		increaseSkyLight(x, y, z-1, light);
-	}
-	
-	/**
-	 * Updates the sky light if the current light level is lower than the given.
-	 */
-	private void increaseSkyLight(int x, int y, int z, byte light) {
-		// Check Y-coordinate
-		if(y > MAX_HEIGHT - 1 || y < 0) {
-			return;
-		}
-		
-		// Calculate new light level
-		byte transparency = getTransparency(x, y, z);
-		if(transparency == 0) {
-			return;
-		}
-		if(transparency == 1) {
-			light--;
-		} else if(transparency > 1) {
-			light -= 1 + transparency;
-		}
-		if(transparency < 1) {
-			return;
-		}
-		
-		// Update is current light is lower
-		if(getSkyLight(x, y, z) < light) {
-			setSkyLight(x, y, z, light);
+			region.addSkyLight();
 		}
 	}
 	

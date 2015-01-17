@@ -51,13 +51,36 @@ public class Region implements IBlockContainer {
 	private Chunk[][] chunks = new Chunk[CHUNKS_PER_REGION_SIDE][CHUNKS_PER_REGION_SIDE];
 	private DefaultLayers layers;
 	
+	private int xPos, zPos;
+	private IBlockContainer parent;
+	
 	/**
 	 * Creates a new instance.
 	 * 
+	 * @param parent The parent block container
 	 * @param layers The default layers. Can be 'null'
+	 * @param xPos The X-coordinate within the world
+	 * @param zPos The Z-coordinate within the world
 	 */
-	public Region(DefaultLayers layers) {
+	public Region(IBlockContainer parent, int xPos, int zPos, DefaultLayers layers) {
+		this.parent = parent;
+		this.xPos = xPos;
+		this.zPos = zPos;
 		this.layers = layers;
+	}
+	
+	/**
+	 * @return The X-coordinate within the world
+	 */
+	public int getX() {
+		return xPos;
+	}
+	
+	/**
+	 * @return The Z-coordinate within the world
+	 */
+	public int getZ() {
+		return zPos;
 	}
 	
 	/**
@@ -82,23 +105,6 @@ public class Region implements IBlockContainer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte getTransparency(int x, int y, int z) {
-		// Get chunk 
-		Chunk chunk = getChunk(x, z, false);
-		
-		if(chunk != null) {
-			int blockX = x % Chunk.BLOCKS_PER_CHUNK_SIDE;
-			int blockZ = z % Chunk.BLOCKS_PER_CHUNK_SIDE;
-			byte light = chunk.getTransparency(blockX, y, blockZ);
-			return light;
-		}
-		return World.DEFAULT_TRANSPARENCY;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public byte getSkyLight(int x, int y, int z) {
 		// Get chunk 
 		Chunk chunk = getChunk(x, z, false);
@@ -116,14 +122,46 @@ public class Region implements IBlockContainer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setSkyLight(int x, int y, int z, byte light) {
-		// Get chunk 
-		Chunk chunk = getChunk(x, z, false);
+	public byte getSkyLightFromParent(IBlockContainer child, int childX, int childY, int childZ) {
+		int x = ((Chunk)child).getX() * Chunk.BLOCKS_PER_CHUNK_SIDE + childX;
+		int z = ((Chunk)child).getZ() * Chunk.BLOCKS_PER_CHUNK_SIDE + childZ;
 		
-		if(chunk != null) {
-			int blockX = x % Chunk.BLOCKS_PER_CHUNK_SIDE;
-			int blockZ = z % Chunk.BLOCKS_PER_CHUNK_SIDE;
-			chunk.setSkyLight(blockX, y, blockZ, light);
+		// Same region?
+		if(x >= 0 && x < BLOCKS_PER_REGION_SIDE && z >= 0 && z < BLOCKS_PER_REGION_SIDE) {
+			return getSkyLight(x, childY, z);
+		} else {
+			// Pass to parent
+			return parent.getSkyLightFromParent(this, x, childY, z);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void spreadSkyLight(byte light) {
+		for(int x = 0; x < CHUNKS_PER_REGION_SIDE; x++) {
+			for(int z = 0; z < CHUNKS_PER_REGION_SIDE; z++) {
+				Chunk chunk = chunks[x][z];
+				if(chunk != null) {
+					chunk.spreadSkyLight(light);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Adds the sky light. Starts from top the top of each column and sets sky light to full, up to 
+	 * the first non-transparent block.
+	 */
+	public void addSkyLight() {
+		for(int x = 0; x < CHUNKS_PER_REGION_SIDE; x++) {
+			for(int z = 0; z < CHUNKS_PER_REGION_SIDE; z++) {
+				Chunk chunk = chunks[x][z];
+				if(chunk != null) {
+					chunk.addSkyLight();
+				}
+			}
 		}
 	}
 	
@@ -154,7 +192,7 @@ public class Region implements IBlockContainer {
 		
 		// Create chunk
 		if(chunk == null && create) {
-			chunk = new Chunk(chunkX, chunkZ, layers);
+			chunk = new Chunk(this, chunkX, chunkZ, layers);
 			chunks[chunkX][chunkZ] = chunk;
 		}
 		return chunk;
