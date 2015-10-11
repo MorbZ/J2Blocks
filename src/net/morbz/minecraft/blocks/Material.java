@@ -63,7 +63,7 @@ public class Material {
 	public static final Material DIRT = new Material(3, 0); // √
 	public static final Material COBBLESTONE = new Material(4, 0); // √
 	public static final Material PLANKS = new Material(5, 0); // √
-	public static final Material SAPLING = new Material(6, 1);
+	public static final Material SAPLING = new Material(6, 1); // ~ (Growth stage missing)
 	public static final Material BEDROCK = new Material(7, 0); // √
 	public static final Material FLOWING_WATER = new Material(8, 2);
 	public static final Material WATER = new Material(9, 2); // √
@@ -94,8 +94,8 @@ public class Material {
 	public static final Material PISTON_HEAD = new Material(34, 1);
 	public static final Material WOOL = new Material(35, 0); // √
 	public static final Material PISTON_EXTENSION = new Material(36, 1);
-	public static final Material YELLOW_FLOWER = new Material(37, 1); // √
-	public static final Material RED_FLOWER = new Material(38, 0);
+	public static final Material YELLOW_FLOWER = new Material(37, 1); // √ (Double implemented)
+	public static final Material RED_FLOWER = new Material(38, 1); // √
 	public static final Material BROWN_MUSHROOM = new Material(39, 1); // √
 	public static final Material RED_MUSHROOM = new Material(40, 1); // √
 	public static final Material GOLD_BLOCK = new Material(41, 0); // √
@@ -225,7 +225,7 @@ public class Material {
 	public static final Material SLIME_BLOCK = new Material(165, 1); // √
 	public static final Material BARRIER = new Material(166, 1); // √
 	public static final Material IRON_TRAPDOOR = new Material(167, 1);
-	public static final Material PRISMARINE = new Material(168, 0);
+	public static final Material PRISMARINE = new Material(168, 0); // √
 	public static final Material SEA_LANTERN = new Material(169, 1); // √, Transparency not clear
 	public static final Material HAY_BLOCK = new Material(170, 0);
 	public static final Material CARPET = new Material(171, 1); // √
@@ -236,7 +236,7 @@ public class Material {
 	public static final Material STANDING_BANNER = new Material(176, 1);
 	public static final Material WALL_BANNER = new Material(177, 1);
 	public static final Material DAYLIGHT_DETECTOR_INVERTED = new Material(178, 1);
-	public static final Material RED_SANDSTONE = new Material(179, 0);
+	public static final Material RED_SANDSTONE = new Material(179, 0); // √
 	public static final Material RED_SANDSTONE_STAIRS = new Material(180, 0); // Partial transparency
 	public static final Material DOUBLE_STONE_SLAB2 = new Material(181, 0);
 	public static final Material STONE_SLAB2 = new Material(182, 1);
