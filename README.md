@@ -2,7 +2,7 @@
 
 J2Blocks aims to provide a simple library for custom map generation. In order to use this library it is not necessary to deal with things like regions, chunks and block data. However it aims to implement all map features that Minecraft offers. Please keep in mind that this is still beta.
 
-[→ J2Blocks Documentation](http://docs.morbz.de/j2blocks/)
+[→ J2Blocks Documentation](https://morbz.github.io/J2Blocks/index.html)
 
 Example
 ------
