@@ -31,9 +31,8 @@ import net.morbz.minecraft.blocks.states.Facing5State;
  * 
  * @author MorbZ
  */
-public class RedstoneTorchBlock implements IBlock {
+public class RedstoneTorchBlock extends Facing5Block {
 	private boolean isActive;
-	private Facing5State facing;
 	
 	/**
 	 * Creates a new instance.
@@ -42,52 +41,16 @@ public class RedstoneTorchBlock implements IBlock {
 	 * @param facing The direction in which the torch is facing
 	 */
 	public RedstoneTorchBlock(boolean isActive, Facing5State facing) {
+		super(facing);
 		this.isActive = isActive;
-		this.facing = facing;
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte getBlockId() {
+	protected Material getMaterial() {
 		// Is active?
-		Material material = isActive ? Material.REDSTONE_TORCH : Material.UNLIT_REDSTONE_TORCH;
-		return (byte)material.getValue();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public byte getBlockData() {
-		// Facing direction
-		byte data = 0;
-		switch(facing) {
-		case EAST:
-			data = 1;
-			break;
-		case WEST:
-			data = 2;
-			break;
-		case SOUTH:
-			data = 3;
-			break;
-		case NORTH:
-			data = 4;
-			break;
-		case UP:
-			data = 5;
-			break;
-		}
-		return data;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getTransparency() {
-		return 1;
+		return isActive ? Material.REDSTONE_TORCH : Material.UNLIT_REDSTONE_TORCH;
 	}
 }
